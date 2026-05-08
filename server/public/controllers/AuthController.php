@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/utils/response.php';
-require_once __DIR__ . '/config/jwt.php';
-require_once __DIR__ . '/models/User.php';
+require_once __DIR__ . '/../utils/response.php';
+require_once __DIR__ . '/../config/jwt.php';
+require_once __DIR__ . '/../models/User.php';
 
 class AuthController {
     private User $userModel;

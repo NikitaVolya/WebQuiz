@@ -1,17 +1,24 @@
 <?php
 
-require_once __DIR__ . '/controllers/UserController.php';
+require_once __DIR__ . '/../controllers/UserController.php';
 
-$user = new UserController($conn);
+$userController = new UserController($conn);
 
-$action = $_GET['action'] ?? '';
 
-switch ($action) {
-    case "get":
-        $user->getUserById($_GET['id']);
-        break;
+// GET user/status/:id
+if ($method === "GET" && $action === "stats" && isset($segments[2])) {
+    $userController->getStats($segments[2]);
+    exit;
+}
+// GET user/:id
+else if ($method === "GET" && isset($segments[1])) {
+    $userController->getUserById($segments[1]);
+    exit;
+}
 
-    case "stats":
-        $user->getStats($_GET['id']);
-        break;
+else {
+
+    http_response_code(404);
+    echo json_encode(["error" => "Route not found"]);
+
 }

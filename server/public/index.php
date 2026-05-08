@@ -7,9 +7,18 @@ header("Content-Type: application/json");
 $db = new Database();
 $conn = $db->getConnection();
 
-$route = $_GET['route'] ?? '';
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
 
-switch ($route) {
+$uri = str_replace("/api", "", $uri);
+
+$segments = explode("/", trim($uri, "/"));
+
+$controller = $segments[0] ?? null;
+$action = $segments[1] ?? null;
+
+switch ($controller) {
+
     case "auth":
         require "routes/auth.php";
         break;
@@ -19,5 +28,6 @@ switch ($route) {
         break;
 
     default:
-        echo json_encode(["status" => "API running"]);
+        http_response_code(404);
+        echo json_encode(["error" => "Route not found"]);
 }
