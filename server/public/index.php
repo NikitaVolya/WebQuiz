@@ -19,6 +19,10 @@ $action = $segments[1] ?? null;
 
 switch ($controller) {
 
+    case "quizzes":
+        require "routes/quizzes.php";
+        break;
+
     case "auth":
         require "routes/auth.php";
         break;
