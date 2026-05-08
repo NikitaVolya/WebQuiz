@@ -31,6 +31,10 @@ switch ($controller) {
         require "routes/users.php";
         break;
 
+    case "categories":
+        require "routes/categories.php";
+        break;
+
     default:
         http_response_code(404);
         echo json_encode(["error" => "Route not found"]);
