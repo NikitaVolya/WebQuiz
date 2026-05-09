@@ -1,0 +1,354 @@
+.engineWrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--bg-main);
+  gap: 10px;
+}
+
+/* --- CENTRE : IMAGE --- */
+.imageContainer {
+  flex: 1; 
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.qImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* --- QUESTION --- */
+.questionText {
+  font-size: 1.3rem;
+  text-align: center;
+  margin: 10px 0;
+  font-weight: 700;
+  flex-shrink: 0;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- RÉPONSES --- */
+.answersGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  height: 25%;
+  flex-shrink: 0;
+}
+
+.answerCard {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.answerLetter {
+  background: var(--accent);
+  color: white;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.answerText {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .quizTitle { display: none; }
+  .questionText { font-size: 1.1rem; }
+  .answerText { font-size: 0.9rem; }
+}
+
+
+
+
+
+
+
+/* --- HEADER CONTAINER --- */
+.gameHeader {
+  width: 100%;
+  height: 65px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* Les deux blocs flottants */
+.headerSection {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  height: 45px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  gap: 12px;
+}
+
+/* --- SECTION GAUCHE (Stats) --- */
+.statGroup {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+
+.iconGold {
+  color: #ffcc00;
+}
+
+/* --- SECTION DROITE (Quiz Info) --- */
+.quizInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-right: 1px solid var(--border);
+  padding-right: 10px;
+}
+
+.miniatureBox {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.miniatureImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quizTitleDisplay {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: uppercase;
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actionsGroup {
+  display: flex;
+  gap: 4px;
+}
+
+.iconBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.iconBtn:hover {
+  background: var(--bg-hover);
+  color: var(--text-main);
+}
+
+.exitBtn:hover {
+  color: var(--danger);
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 600px) {
+  .quizInfo {
+    border-right: none;
+    padding-right: 0;
+  }
+}
+
+
+
+
+
+
+
+
+/* --- SCREEN BASE --- */
+.resultScreen {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 40px 20px;
+  background: var(--bg-main);
+  position: relative;
+  overflow: hidden;
+}
+
+.uiGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  background: var(--accent);
+  filter: blur(120px);
+  opacity: 0.15;
+  z-index: 0;
+}
+
+.resultContent {
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* --- TYPOGRAPHIE --- */
+.mainTrophy {
+  color: #ffcc00;
+  filter: drop-shadow(0 0 15px rgba(255, 204, 0, 0.4));
+  margin-bottom: 10px;
+}
+
+.hugeTitle {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* --- SCORE HERO --- */
+.scoreHero {
+  margin: 40px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.scoreLabel {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+}
+
+.scoreValue {
+  font-size: 6rem;
+  font-weight: 950;
+  line-height: 1;
+  background: linear-gradient(180deg, var(--text-main) 30%, transparent 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- STATS --- */
+.minimalStats {
+    margin-bottom: 40px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.miniStat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- BOUTONS (Modernes & Larges) --- */
+.actionStack {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btnPrimary {
+  width: 100%;
+  height: 65px;
+  background: var(--text-main);
+  color: var(--bg-main);
+  border: none;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.btnGhost {
+  width: 100%;
+  height: 65px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btnGhost:hover {
+    color: var(--text-main);
+}
