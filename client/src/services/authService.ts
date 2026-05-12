@@ -2,27 +2,27 @@
  * @file services/authService.ts
  * Logique métier de l'authentification.
  */
-import { JsonAuthRepository as authRepo } from '../repositories/json/JsonAuthRepository';
 import type { User, UserCredentials, SignUpData } from '../types/auth';
+import { ApiAuthRepository } from '../repositories/api/ApiAuthRepository';
+const authRepo = new ApiAuthRepository();
 
 export const authService = {
   /**
    * Cas d'utilisation : Connexion de l'utilisateur
    */
   signIn: async (credentials: UserCredentials): Promise<User> => {
-    // 1. Règle métier : Validation de surface
+    // Règle métier : Validation de surface
     if (!credentials.email || !credentials.password) {
       throw new Error("Identifiants incomplets.");
     }
-
-    // 2. Appel au contrat
+    
     const user = await authRepo.authenticate(credentials);
     
     if (!user) {
       throw new Error("Email ou mot de passe incorrect.");
     }
 
-    // 3. Persistance de la session
+    // Persistance de la session
     authRepo.saveSession(user);
     
     return user;
@@ -32,7 +32,7 @@ export const authService = {
    * Cas d'utilisation : Inscription d'un nouvel utilisateur
    */
   signUp: async (data: SignUpData): Promise<User> => {
-    // 1. Règles métier : Validations
+    // Règles métier : Validations
     if (data.username.length < 3) {
       throw new Error("Le pseudo doit contenir au moins 3 caractères.");
     }
@@ -40,7 +40,7 @@ export const authService = {
       throw new Error("Format d'email invalide.");
     }
 
-    // 2. Vérification de disponibilité
+    // Vérification de disponibilité
     const emailExists = await authRepo.exists('email', data.email);
     if (emailExists) {
       throw new Error("Cet email est déjà utilisé.");
@@ -51,10 +51,10 @@ export const authService = {
       throw new Error("Ce pseudo est déjà pris.");
     }
 
-    // 3. Création via le repo
+    // Création via le repo
     const newUser = await authRepo.create(data);
 
-    // 4. Connexion automatique après inscription
+    // Connexion automatique après inscription
     authRepo.saveSession(newUser);
 
     return newUser;

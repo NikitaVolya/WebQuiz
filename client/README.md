@@ -1,73 +1,83 @@
-# React + TypeScript + Vite
+# Quiz Battle - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+L'interface client de Quiz Battle est une Single Page Application (SPA) moderne construite avec **React**, **TypeScript** et **Vite**. Elle offre une expérience de jeu fluide avec des animations haute performance via Framer Motion.
 
-Currently, two official plugins are available:
+## Stack Technique
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Framework** : React 19
+- **Langage** : TypeScript
+- **Tooling** : Vite
+- **Styles** : CSS Modules (isolation des composants)
+- **Animations** : Framer Motion
+- **Icônes** : Lucide React
+- **Client HTTP** : Axios avec intercepteurs pour la gestion du JWT
 
-## React Compiler
+## Architecture du Projet
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Le projet suit une architecture découplée pour faciliter la maintenance et l'évolution vers différents backends (API réelle ou Mocks JSON).
 
-## Expanding the ESLint configuration
+- **Repositories** : Abstraction de la couche de données. Utilise des interfaces pour garantir que le reste de l'appli ne dépend pas de l'implémentation (API PHP ou LocalStorage).
+- **Mappers** : Traducteurs de données situés dans `src/repositories/api/mappers/`. Ils convertissent le `snake_case` de la base de données PHP en `camelCase` TypeScript.
+- **Services** : Orchestrent la logique métier et font le lien entre les hooks et les repositories.
+- **Hooks Personnalisés** : Encapsulent la logique complexe (ex: `useSoloGame` gère le timer de 50ms et le cycle de vie d'une partie).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Stratégie de Données (Mocking)
+L'application supporte nativement le changement de source de données. Grâce au pattern Repository, il est possible de basculer entre :
+- **ApiRepository** : Consomme l'API PHP réelle (production/dev avancé).
+- **JsonRepository** : Utilise les mocks locaux situés dans `src/data/` (développement frontend isolé).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Pour changer de source, il suffit de modifier l'instanciation dans les services correspondants (ex: `quizService.ts`).
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Installation et Lancement
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Prérequis
+- **Node.js** : Version 18.0 ou supérieure.
+- **npm** : Version 9.0 ou supérieure.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. **Installation des dépendances** :
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+    ```bash
+    npm install
+    ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. **Lancement du serveur de développement** :
+
+    ```bash
+    npm run dev
+    ```
+    *L'application sera accessible sur http://localhost:5173*
+
+3. **Build pour la production** :
+
+    ```bash
+    npm run build
+    ```
+
+## Configuration du Proxy (Backend)
+
+L'application est configurée pour communiquer avec un backend PHP tournant sur `http://localhost:8000`.
+Le fichier `vite.config.ts` gère le proxy pour les routes suivantes afin d'éviter les erreurs CORS en développement :
+
+* `/auth` → Authentification
+* `/quizzes` → Gestion des quiz
+* `/categories` → Liste des catégories
+* `/users` → Profils utilisateurs
+
+## Gestion de l'Authentification
+
+Le système utilise un **JSON Web Token (JWT)** stocké dans le localStorage.
+
+* **Intercepteur de requête** : Ajoute automatiquement le header `Authorization: Bearer <token>` à chaque appel API.
+* **Intercepteur de réponse** : Déconnecte automatiquement l'utilisateur et nettoie la session si le serveur renvoie une erreur 401 (Token expiré).
+
+## Structure des dossiers clés
+
+* `src/api` : Instance centrale Axios.
+* `src/components/QuizEngine` : Cœur logique du jeu (Solo/Multi).
+* `src/repositories/api/mappers` : Transformation des données reçues du backend.
+* `src/views` : Pages principales de l'application.
+
+## Conventions de code
+- **Types** : Toujours utiliser les interfaces définies dans `src/types`.
+- **Style** : Utilisation stricte de CSS Modules pour éviter les collisions de classes.
+- **Mapping** : Toute nouvelle donnée provenant du backend doit passer par un Mapper pour respecter le standard `camelCase`.

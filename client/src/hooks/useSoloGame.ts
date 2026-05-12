@@ -59,7 +59,7 @@ export const useSoloGame = (quizId: number) => {
     const currentQuestion: Question = quiz.questions[currentIndex];
     
     const selectedAnswer = currentQuestion.answers.find(
-      (a) => String(a.id) === String(answerId)
+      (a) => a.id === answerId
     );
 
     const isCorrect = selectedAnswer?.isCorrect === true;

@@ -1,8 +1,9 @@
 /**
  * @file services/quizService.ts
  */
-import { JsonQuizRepository as quizRepo } from '../repositories/json/JsonQuizRepository';
 import type { Quiz, Category } from "../types/quiz";
+import { ApiQuizRepository } from '../repositories/api/ApiQuizRepository';
+const quizRepo = new ApiQuizRepository();
 
 export const quizService = {
   /**
