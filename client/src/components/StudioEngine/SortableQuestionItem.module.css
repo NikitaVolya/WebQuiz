@@ -1,0 +1,58 @@
+.questionItem {
+  padding: 0.8rem 1rem;
+  margin: 0.4rem 0.8rem;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.questionItemActive {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.itemContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.itemLeft {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.indexBadge {
+  opacity: 0.5;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.sidebarText {
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.dragHandleSidebar {
+  opacity: 0.3;
+  cursor: grab;
+  flex-shrink: 0;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.questionItem:hover .dragHandleSidebar {
+  opacity: 0.8;
+}

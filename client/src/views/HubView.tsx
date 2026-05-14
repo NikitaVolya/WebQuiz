@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PlusCircle, Users } from "lucide-react";
 import { useQuiz } from "../hooks/useQuiz";
 import type { GameMode, GameModifier } from "../types/game";
-import "../styles/HubView.css";
+import styles from "./HubView.module.css";
 
 import { CategoryView } from "./CategoryView";
 import { Header } from "../components/Header";
@@ -22,6 +22,7 @@ interface HubViewProps {
   onOpenAuth: () => void;
   onLanguageClick: () => void;
   onLogoutClick: () => void;
+  onStudioClick: () => void;
 }
 
 type ViewState = 'HOME' | 'CATEGORY' | 'SEARCH';
@@ -34,6 +35,7 @@ export const HubView = ({
   onOpenAuth,
   onLanguageClick,
   onLogoutClick,
+  onStudioClick,
 }: HubViewProps) => {
   const [currentView, setCurrentView] = useState<ViewState>('HOME');
   const [selectedCatId, setSelectedCatId] = useState<number | null>(null);
@@ -100,9 +102,9 @@ export const HubView = ({
       case 'HOME':
       default:
         return (
-          <div className="hub-content">
+          <div className={styles.hubContent}>
             <motion.h1 
-              className="hub-title"
+              className={styles.hubTitle}
               initial={{ y: -50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 120 }}
@@ -111,26 +113,26 @@ export const HubView = ({
             </motion.h1>
 
             {/* Grille des actions rapides */}
-            <div className="actions-grid">
+            <div className={styles.actionsGrid}>
               <motion.button 
-                className="action-card card-create"
+                className={`${styles.actionCard} ${styles.cardCreate}`}
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setIsPreviewOpen(true)}
+                onClick={onStudioClick}
               >
-                <div className="icon-wrapper">
+                <div className={styles.iconWrapper}>
                   <PlusCircle size={48} color="white" />
                 </div>
                 <h2>CRÉER</h2>
               </motion.button>
 
               <motion.button 
-                className="action-card card-join"
+                className={`${styles.actionCard} ${styles.cardJoin}`}
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onJoinGame}
               >
-                <div className="icon-wrapper">
+                <div className={styles.iconWrapper}>
                   <Users size={48} color="white" />
                 </div>
                 <h2>REJOINDRE</h2>
@@ -144,7 +146,7 @@ export const HubView = ({
               onSelectCategory={navigateToCategory}
             />
 
-            <div className="discover-wrapper">
+            <div className={styles.discoverWrapper}>
               <DiscoverSection 
                 quizzes={quizzes} 
                 isLoading={loading}
@@ -160,7 +162,7 @@ export const HubView = ({
 
   return (
     <motion.div 
-      className="hub-container"
+      className={styles.hubContainer}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

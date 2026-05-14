@@ -1,6 +1,7 @@
 /**
  * @file SoloView.tsx
  */
+import { useParams } from 'react-router-dom';
 import { AnimatePresence } from "framer-motion";
 import { SoloEngine } from '../components/QuizEngine/Solo/SoloEngine';
 import { SoloResult } from '../components/QuizEngine/Solo/SoloResult';
@@ -8,20 +9,21 @@ import { useSoloGame } from '../hooks/useSoloGame';
 import { GameLoader } from '../components/GameLoader';
 
 interface SoloViewProps {
-  quizId: number;
   onExit: () => void;
 }
 
-export const SoloView = ({ quizId, onExit }: SoloViewProps) => {
-  // Le hook gère : fetch du quiz, timer, score et progression
-  const game = useSoloGame(quizId);
+export const SoloView = ({ onExit }: SoloViewProps) => {
+  const { quizId } = useParams<{ quizId: string }>();
+  
+  const numericQuizId = quizId ? Number(quizId) : NaN;
+  const game = useSoloGame(numericQuizId);
 
   // Écran de chargement
   if (game.loading) {
     return <GameLoader />;
   }
 
-  // Gestion d'erreur (si le quiz n'existe pas ou ID invalide)
+  // Gestion d'erreur
   if (game.error || !game.quiz) {
     return (
       <div className="error-container">

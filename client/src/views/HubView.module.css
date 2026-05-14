@@ -1,4 +1,4 @@
-.hub-container {
+.hubContainer {
   min-height: 100vh;
   width: 100%;
   display: flex;
@@ -9,7 +9,7 @@
   overflow-x: hidden;
 }
 
-.hub-content {
+.hubContent {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +20,7 @@
   margin-top: 80px;
 }
 
-.hub-title {
+.hubTitle {
   font-size: clamp(3rem, 10vw, 5rem);
   font-weight: 900;
   text-transform: uppercase;
@@ -32,12 +32,12 @@
   text-align: center;
 }
 
-.hub-title span {
+.hubTitle span {
   color: #ffcc00;
   text-shadow: 4px 4px 0px #ff6600;
 }
 
-.actions-grid {
+.actionsGrid {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -47,7 +47,7 @@
   margin-bottom: 50px;
 }
 
-.action-card {
+.actionCard {
   flex: 1;
   position: relative;
   border: none;
@@ -64,15 +64,15 @@
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
-.card-create {
+.cardCreate {
   background: linear-gradient(135deg, var(--success), #228822);
 }
 
-.card-join {
+.cardJoin {
   background: linear-gradient(135deg, var(--accent), #6a1b9a);
 }
 
-.action-card h2 {
+.actionCard h2 {
   font-size: 1.8em;
   margin: 0;
   font-family: var(--font-gaming);
@@ -81,7 +81,7 @@
   text-align: center;
 }
 
-.icon-wrapper {
+.iconWrapper {
   left: 15px;
   background: rgba(255, 255, 255, 0.2);
   padding: 10px;
@@ -91,33 +91,26 @@
   justify-content: center;
 }
 
-.discover-wrapper {
+.discoverWrapper {
   width: 100%;
   margin-top: 20px;
 }
 
-.quiz-grid { 
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
-  width: 100%;
-}
-
 @media (min-width: 800px) {
-  .actions-grid {
+  .actionsGrid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 768px) {
   
-  .actions-grid {
+  .actionsGrid {
     flex-direction: column;
     padding: 0 10px;
     gap: 12px;
   }
 
-  .action-card {
+  .actionCard {
     width: 100%;
     padding: 18px;
   }

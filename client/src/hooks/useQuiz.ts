@@ -13,6 +13,24 @@ export const useQuiz = () => {
   const [error, setError] = useState<string | null>(null);
 
   /**
+   * Charge les catégories
+   */
+  const fetchCategories = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const catData = await quizService.getCategories();
+      setCategories(catData);
+      return catData;
+    } catch (err: any) {
+      setError(err.message || "Erreur lors de la récupération des catégories");
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  /**
    * Charge le flux de découverte
    */
   const loadDiscoveryData = useCallback(async () => {
@@ -66,7 +84,8 @@ export const useQuiz = () => {
     quizzes, 
     categories, 
     loading, 
-    error, 
+    error,
+    fetchCategories,
     loadDiscoveryData, 
     filterQuizzes,
     getFullQuiz 

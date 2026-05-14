@@ -3,8 +3,9 @@
  * Logique métier de l'authentification.
  */
 import type { User, UserCredentials, SignUpData } from '../types/auth';
-import { ApiAuthRepository } from '../repositories/api/ApiAuthRepository';
-const authRepo = new ApiAuthRepository();
+import { JsonAuthRepository as authRepo } from '../repositories/json/JsonAuthRepository';
+// import { ApiAuthRepository } from '../repositories/api/ApiAuthRepository';
+// const authRepo = new ApiAuthRepository();
 
 export const authService = {
   /**
@@ -51,10 +52,8 @@ export const authService = {
       throw new Error("Ce pseudo est déjà pris.");
     }
 
-    // Création via le repo
     const newUser = await authRepo.create(data);
 
-    // Connexion automatique après inscription
     authRepo.saveSession(newUser);
 
     return newUser;
@@ -68,7 +67,7 @@ export const authService = {
   },
 
   /**
-   * Cas d'utilisation : Restauration de session au démarrage (F5)
+   * Cas d'utilisation : Restauration de session au démarrage
    */
   restoreSession: (): User | null => {
     return authRepo.loadSession();

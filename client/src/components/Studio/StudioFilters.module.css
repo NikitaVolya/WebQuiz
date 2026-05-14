@@ -1,0 +1,113 @@
+.filtersBar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  animation: fadeIn 0.5s ease;
+}
+
+/* SEARCH BOX */
+.searchBox {
+  flex: 1;
+  max-width: 450px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  height: 48px;
+  transition: all 0.2s ease;
+}
+
+.searchBox:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.searchIcon { color: var(--text-secondary); margin-right: 12px; }
+.searchBox input { background: transparent; border: none; color: var(--text-main); width: 100%; outline: none; font-size: 0.95rem; }
+
+/* CUSTOM DROPDOWN */
+.dropdownContainer {
+  position: relative;
+  min-width: 200px;
+}
+
+.dropdownTrigger {
+  width: 100%;
+  height: 48px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.dropdownTrigger:hover, .dropdownTrigger.active {
+  border-color: var(--accent);
+}
+
+.filterIcon { color: var(--text-secondary); }
+.chevron { margin-left: auto; color: var(--text-secondary); transition: transform 0.3s ease; }
+.chevron.rotate { transform: rotate(180deg); }
+
+/* LE MENU FLOTTANT */
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 8px;
+  z-index: 100;
+  animation: slideDown 0.2s ease-out;
+  backdrop-filter: blur(10px);
+}
+
+.dropdownOption {
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropdownOption:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.dropdownOption.selected {
+  background: var(--accent);
+  color: white;
+}
+
+/* ANIMATIONS */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .filtersBar { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .searchBox, .dropdownContainer { max-width: 100%; }
+}
