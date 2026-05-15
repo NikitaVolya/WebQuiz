@@ -19,7 +19,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE password_resets {
+CREATE TABLE password_resets (
     id int AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
     token VARCHAR(255) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE password_resets {
     FOREIGN KEY (user_id)
     REFERENCES users(id)
     ON DELETE CASCADE
-};
+);
 
 CREATE TABLE user_stats (
     user_id INT PRIMARY KEY,
