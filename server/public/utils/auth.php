@@ -8,27 +8,20 @@ class Auth {
     public static function getAuthenticatedUser(PDO $conn): ?array {
 
         $headers = getallheaders();
+        $authHeader = $headers['Authorization'] ?? $headers['authorization'] ?? null;
 
-        // CHECK AUTH HEADER
-        if (!isset($headers['Authorization'])) {
+        if (!$authHeader) {
+            error_log("AUTH DEBUG: Pas de header Authorization trouvé");
             return null;
         }
 
-        $authHeader = $headers['Authorization'];
-
-        // EXTRACT TOKEN
-        $token = trim(
-            str_replace('Bearer ', '', $authHeader)
-        );
-
-        // VALIDATE TOKEN
-        if (empty($token)) {
-            return null;
-        }
+        $token = trim(str_replace('Bearer ', '', $authHeader));
+        error_log("AUTH DEBUG: Token extrait : " . substr($token, 0, 20) . "...");
 
         $payload = JWT::validate($token);
 
         if (!$payload) {
+            error_log("AUTH DEBUG: JWT::validate a renvoyé false");
             return null;
         }
 
