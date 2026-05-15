@@ -1,8 +1,8 @@
-# 🏆 Quiz Battle - Fullstack Application
+# Quiz Battle - Fullstack Application
 
 Quiz Battle est une plateforme de quiz interactive et compétitive. Ce projet intègre un système de jeu en temps réel (Solo & Multijoueur), un Studio de création de quiz complet, et une architecture robuste séparant le **Frontend (React/TS)** du **Backend (PHP/MySQL)**.
 
-## 📁 Structure du Projet
+## Structure du Projet
 
 * **/client** : Interface utilisateur moderne développée avec React 18, TypeScript, Vite et Framer Motion.
 * **/server** : API RESTful en PHP natif avec gestion JWT, architecture par contrôleurs et système de base de données MySQL.
@@ -10,7 +10,7 @@ Quiz Battle est une plateforme de quiz interactive et compétitive. Ce projet in
 
 ---
 
-## 🚀 Installation Rapide
+## Installation Rapide
 
 ### 1. Base de données
 1.  Ouvrez votre gestionnaire MySQL (phpMyAdmin, MySQL Workbench, etc.).
@@ -29,7 +29,7 @@ Le client est configuré pour communiquer avec le serveur local.
 
 ---
 
-## 🛠️ Lancement du projet
+## Lancement du projet
 
 Le projet nécessite que le serveur et le client tournent simultanément.
 
