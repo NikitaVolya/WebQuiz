@@ -68,4 +68,103 @@ class User {
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    
+    public function createResetToken($email) {
+
+        $stmt = $this->conn->prepare(
+            "SELECT id FROM users WHERE email = ?"
+        );
+
+        $stmt->execute([$email]);
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$user) {
+            return false;
+        }
+
+        $token = bin2hex(random_bytes(32));
+
+        $expires = date(
+            'Y-m-d H:i:s',
+            strtotime('+1 hour')
+        );
+
+        $stmt = $this->conn->prepare(
+            "INSERT INTO password_resets
+            (user_id, token, expires_at)
+            VALUES (?, ?, ?)"
+        );
+
+        $stmt->execute([
+            $user['id'],
+            $token,
+            $expires
+        ]);
+
+        return $token;
+    }
+
+    public function getUserByResetToken($token) {
+
+        $stmt = $this->conn->prepare(
+            "SELECT users.*
+            FROM users
+
+            INNER JOIN password_resets
+            ON users.id = password_resets.user_id
+
+            WHERE password_resets.token = ?
+            AND password_resets.expires_at > NOW()"
+        );
+
+        $stmt->execute([$token]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function resetPassword(
+        $token,
+        $newPassword
+    ) {
+
+        $hash = password_hash(
+            $newPassword,
+            PASSWORD_BCRYPT
+        );
+
+        $stmt = $this->conn->prepare(
+            "SELECT user_id
+            FROM password_resets
+            WHERE token = ?"
+        );
+
+        $stmt->execute([$token]);
+
+        $reset = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$reset) {
+            return false;
+        }
+
+        $stmt = $this->conn->prepare(
+            "UPDATE users
+            SET password_hash = ?
+            WHERE id = ?"
+        );
+
+        $stmt->execute([
+            $hash,
+            $reset['user_id']
+        ]);
+
+        $stmt = $this->conn->prepare(
+            "DELETE FROM password_resets
+            WHERE token = ?"
+        );
+
+        $stmt->execute([$token]);
+
+        return true;
+    }
 }
