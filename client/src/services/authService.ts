@@ -7,6 +7,8 @@ import type { User, UserCredentials, SignUpData } from '../types/auth';
 import { ApiAuthRepository } from '../repositories/api/ApiAuthRepository';
 const authRepo = new ApiAuthRepository();
 
+import { studioService } from './studioService';
+
 export const authService = {
   /**
    * Cas d'utilisation : Connexion de l'utilisateur
@@ -64,6 +66,7 @@ export const authService = {
    */
   signOut: (): void => {
     authRepo.destroySession();
+    studioService.clearCache();
   },
 
   /**
