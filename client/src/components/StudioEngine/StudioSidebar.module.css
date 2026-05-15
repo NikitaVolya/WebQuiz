@@ -1,0 +1,114 @@
+/* --- CONTENEUR SIDEBAR --- */
+.sidebar {
+  width: 280px;
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+}
+
+.sidebarHeader {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebarTitle {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- LISTE & ÉLÉMENTS --- */
+.questionList {
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.sidebarInfoBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.8rem 1rem;
+  margin: 0.4rem 0.8rem;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--text-main);
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.sidebarInfoBtn:hover {
+  background: var(--bg-main);
+}
+
+.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.sidebarText {
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* --- BOUTON AJOUT --- */
+.addBtnSidebar {
+  width: calc(100% - 2rem);
+  margin: 1rem;
+  padding: 0.8rem;
+  border-radius: 12px;
+  border: 2px dashed var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.addBtnSidebar:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* --- UTILS --- */
+.dividerH {
+  height: 1px;
+  background: var(--border);
+  margin: 0.8rem 1.5rem;
+}
+
+/* --- ÉTAT OUVERT (Commun Desktop/Mobile) --- */
+.sidebarOpen {
+  transform: translateX(0) !important;
+}
+
+/* --- RESPONSIVE MOBILE (< 1024px) --- */
+@media (max-width: 1024px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    box-shadow: 20px 0 50px rgba(0, 0, 0, 0);
+    transition: all 0.2;
+  }
+
+  .sidebarOpen {
+    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.3);
+  }
+}

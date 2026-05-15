@@ -1,0 +1,124 @@
+/**
+ * @file index.css
+ * @description Variables de thème et reset global.
+ */
+
+:root {
+  /* --- COULEURS THEME LIGHT --- */
+  --bg-main: #f0eff5;
+  --bg-card: #fdfcff;
+  
+  /* Textes */
+  --text-main: #1a0b2e;
+  --text-secondary: #5a5266;
+  --text-on-accent: #ffffff;
+  --text-on-card: #1a0b2e;
+
+  /* Accents */
+  --accent: #9d26ff;
+  --accent-hover: #7e19d4;
+  --accent-soft: rgba(157, 38, 255, 0.08);
+  
+  --danger: #ff4757;
+  --on-danger: #ffffff;
+  --success: #00d27a;
+  --on-success: #ffffff;
+
+  /* UI Elements */
+  --border: #e1dde6;
+  --input-bg: #f8f7fa;
+  --shadow: rgba(26, 11, 46, 0.06) 0 10px 25px -5px;
+  --overlay: rgba(26, 11, 46, 0.5);
+
+  /* Fonts */
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-gaming: 'Arial Black', sans-serif;
+
+  font-family: var(--font-main);
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+}
+
+/* --- THEME DARK --- */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --bg-main: #0a0412;
+    --bg-card: #140b21;
+    
+    --text-main: #f0f0f5;
+    --text-secondary: #a198af;
+    --text-on-accent: #ffffff;
+    --text-on-card: #f0f0f5;
+
+    --accent: #e600ff;
+    --accent-hover: #bd00d1;
+    --accent-soft: rgba(230, 0, 255, 0.12);
+
+    --border: rgba(230, 0, 255, 0.15);
+    --input-bg: rgba(255, 255, 255, 0.03);
+    --shadow: rgba(0, 0, 0, 0.8) 0 20px 40px -10px;
+    --overlay: rgba(0, 0, 0, 0.85);
+  }
+}
+
+:root.dark {
+  --bg-main: #0a0412;
+  --bg-card: #140b21;
+  
+  --text-main: #f0f0f5;
+  --text-secondary: #a198af;
+  --text-on-accent: #ffffff;
+  --text-on-card: #f0f0f5;
+
+  --accent: #e600ff;
+  --accent-hover: #bd00d1;
+  --accent-soft: rgba(230, 0, 255, 0.12);
+
+  --border: rgba(230, 0, 255, 0.15);
+  --input-bg: rgba(255, 255, 255, 0.03);
+  --shadow: rgba(0, 0, 0, 0.8) 0 20px 40px -10px;
+  --overlay: rgba(0, 0, 0, 0.85);
+}
+
+
+/* --- RESET & LAYOUT --- */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* --- TYPOGRAPHIE --- */
+h1, h2, h3 {
+  margin: 0;
+  font-family: var(--font-gaming);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}

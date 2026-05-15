@@ -1,0 +1,57 @@
+.loaderContainer {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-main);
+  z-index: 2000;
+}
+
+.content {
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+}
+
+.iconWrapper {
+  margin-bottom: 24px;
+  color: var(--accent);
+  display: flex;
+  justify-content: center;
+}
+
+.zapIcon {
+  filter: drop-shadow(0 0 15px var(--accent));
+}
+
+.title {
+  font-family: var(--font-gaming);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
+/* LA BARRE */
+.progressContainer {
+  width: 100%;
+  height: 6px;
+  background: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progressBar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.statusText {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}

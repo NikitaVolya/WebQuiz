@@ -1,0 +1,1 @@
+export type RoomStatus = 'LOBBY' | 'PLAYING' | 'RESULTS' | 'FINISHED';

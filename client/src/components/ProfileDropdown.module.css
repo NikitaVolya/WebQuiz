@@ -1,0 +1,123 @@
+.invisibleOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
+
+.dropdownCard {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 260px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 12px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+}
+
+.avatarLarge {
+  width: 44px;
+  height: 44px;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 1rem;
+}
+
+.status {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 8px 0;
+}
+
+.menuList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menuItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.menuItem span {
+  flex: 1;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.menuIcon {
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.arrow {
+  opacity: 0.3;
+}
+
+.menuItem:hover {
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+.menuItem:hover .menuIcon {
+  color: var(--accent);
+}
+
+.logoutBtn {
+  color: var(--danger);
+}
+
+.logoutBtn:hover {
+  background: rgba(255, 71, 87, 0.1);
+  color: var(--danger);
+}
+
+.logoutBtn:hover .menuIcon {
+  color: var(--danger);
+}
