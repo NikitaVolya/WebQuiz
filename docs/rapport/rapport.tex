@@ -1,0 +1,283 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Préambule (Packages) ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{hyperref}
+
+% Configuration de la page
+\geometry{hmargin=2.5cm,vmargin=2.5cm}
+\onehalfspacing 
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue
+}
+
+\begin{document}
+
+% ======================================================
+% 1. PAGE DE GARDE
+% ======================================================
+\begin{titlepage}
+    % --- Logo en haut à gauche ---
+    \begin{flushleft}
+        \includegraphics[width=0.3\textwidth]{logo_ujm.png}
+    \end{flushleft}
+    
+    \centering % On repasse en centré pour le reste de la page
+    
+    \vspace*{3cm}
+    
+    % --- Titre encadré par des lignes ---
+    \hrule % Ligne horizontale
+    \vspace{0.4cm}
+    {\Huge \bfseries Quiz Battle} \\[0.4cm]
+    {\Large \scshape Plateforme Interactive de Quiz Fullstack}
+    \vspace{0.4cm}
+    \hrule
+    
+    \vspace{1.5cm}
+    {\large \textbf{Projet de Développement Web}} \\
+    {\large Licence 2 Informatique --- 2025/2026}
+    
+    \vfill
+    
+    % --- Bas de page : Auteurs et Prof ---
+    \begin{minipage}{0.45\textwidth}
+        \begin{flushleft} \large
+            \textbf{Réalisé par :}\\
+            \vspace{0.2cm}
+            BERRUEZO Arthur \\
+            VOLIANSKYI Nikita \\
+            MELKONIAN Mark
+        \end{flushleft}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \begin{flushright} \large
+            \textbf{Sous la direction de :}\\
+            \vspace{0.2cm}
+            M. Moulin
+        \end{flushright}
+    \end{minipage}
+
+    \vspace{2cm}
+    
+    % --- Pied de page ---
+    \hrule
+    \vspace{0.2cm}
+    {\large Université Jean Monnet --- 15 mai 2026}
+\end{titlepage}
+
+\newpage
+
+% ======================================================
+% 2. TABLE DES MATIÈRES
+% ======================================================
+\tableofcontents
+\newpage
+
+% ======================================================
+% 3. INTRODUCTION
+% ======================================================
+\section{Introduction}
+
+Dans le cadre de la deuxième année de licence Informatique, le projet de développement web constitue une étape clé pour synthétiser l'apprentissage des technologies client-serveur. L'objectif imposé est la réalisation d'un site web dynamique complet, intégrant une gestion de base de données et une logique métier robuste.
+
+Le projet que nous présentons, intitulé \textbf{Quiz Battle}, est une plateforme interactive dédiée à l'apprentissage et au divertissement par le biais de quiz thématiques. L'ambition de ce projet dépasse la simple création de pages statiques ; il s'agit d'une \textit{Single Page Application} (SPA) moderne, offrant une fluidité de navigation similaire à une application native.
+
+L'enjeu technique majeur a été de faire cohabiter deux environnements distincts :
+\begin{itemize}
+    \item Un \textbf{Frontend} développé avec \textbf{React} et \textbf{TypeScript}, garantissant une interface utilisateur réactive et un code fortement typé.
+    \item Un \textbf{Backend} en \textbf{PHP natif}, structuré pour répondre aux requêtes via une API RESTful, assurant la sécurité des données et la communication avec une base de données \textbf{MySQL}.
+\end{itemize}
+
+Ce rapport détaille les choix d'architecture, la structure de la base de données, ainsi que les défis techniques rencontrés lors de la mise en œuvre des fonctionnalités telles que le système de jeu, le studio de création et la gestion de l'authentification.
+
+
+% ======================================================
+% 4. DESCRIPTION DU SUJET ET FONCTIONNALITÉS
+% ======================================================
+\section{Description du Sujet et Fonctionnalités}
+
+L'application \textbf{Quiz Battle} a été conçue comme une plateforme communautaire et compétitive. Elle s'articule autour de trois piliers : l'exploration de contenu, l'expérience de jeu et la création.
+
+\subsection{Le Hub : Point d'entrée de l'expérience}
+Le "Hub" constitue la page d'accueil de l'utilisateur connecté. Contrairement à une liste statique, il est organisé pour favoriser la découverte :
+\begin{itemize}
+    \item \textbf{Navigation par catégories} : Un système de carrousel interactif permet de filtrer les quiz par thématiques (Sciences, Cinéma, Histoire, etc.), facilitant l'accès aux sujets de prédilection de l'utilisateur.
+    \item \textbf{Section Discover} : Cette zone met en avant des quiz variés et populaires pour inciter l'utilisateur à jouer immédiatement à de nouveaux contenus.
+    \item \textbf{Système de recherche et filtrage} : Une barre de recherche dynamique permet de filtrer l'intégralité du catalogue par mots-clés en temps réel, garantissant une ergonomie optimale même avec un volume important de données.
+\end{itemize}
+
+\subsection{L'expérience de Jeu}
+Le cœur de l'application est son moteur de jeu. Deux modes principaux ont été implémentés :
+\begin{itemize}
+    \item \textbf{Le Mode Solo} : Un parcours d'entraînement où l'utilisateur répond à une série de questions. Une attention particulière a été portée au feedback visuel (barres de progression, animations de réussite) pour rendre l'expérience gratifiante.
+    \item \textbf{Le Mode Lobby (Multi-joueurs)} : Un système de salons privés. Un utilisateur peut créer une salle et obtenir un code unique à 6 caractères. Ses amis peuvent alors rejoindre le salon via ce code pour une session de jeu synchronisée.
+\end{itemize}
+
+\subsection{Le Studio de Création}
+Pour assurer la pérennité du contenu, un "Studio" complet a été développé. Il permet à tout utilisateur de devenir créateur :
+\begin{itemize}
+    \item \textbf{Éditeur de Quiz} : Une interface dédiée à la gestion des questions, des réponses et des paramètres de jeu (temps par question, points).
+    \item \textbf{Gestion des Brouillons (Drafts)} : Grâce à une structure de données flexible, les créateurs peuvent sauvegarder leur travail en cours sans obligation de publication immédiate. Ces brouillons sont stockés de manière complexe en base de données pour être repris à tout moment.
+\end{itemize}
+
+\subsection{Mécaniques Avancées}
+Afin d'ajouter une dimension stratégique, un système d'inventaire d'objets a été intégré. Les joueurs peuvent obtenir et utiliser des items (bonus ou malus) qui influencent le déroulement de la partie, renforçant ainsi l'aspect "Battle" de la plateforme.
+
+
+% ======================================================
+% 5. STRUCTURE DU SITE ET ARCHITECTURE LOGICIELLE
+% ======================================================
+\section{Structure du Site et Architecture Logicielle}
+
+L'un des défis majeurs de ce projet a été de concevoir une architecture capable de séparer la logique métier de l'interface utilisateur, tout en garantissant une maintenance aisée.
+
+\subsection{Architecture Frontend (React / TypeScript)}
+Le choix de \textbf{React} combiné à \textbf{TypeScript} a permis de transformer le site en une véritable application fluide. Nous avons appliqué plusieurs principes de design (\textit{Design Patterns}) pour structurer le code :
+
+\begin{itemize}
+    \item \textbf{Le Pattern Repository} : Pour ne pas rendre l'interface dépendante de l'API, nous avons créé une couche d'abstraction. Les composants utilisent des interfaces (\textit{IQuizRepository}, \textit{IGameRepository}). Cela nous a permis, durant le développement, de travailler avec des données simulées (\textit{Mocks JSON}) avant de connecter le backend définitif.
+    \item \textbf{Mappers de données} : Une couche de transformation a été mise en place pour convertir les données brutes provenant de MySQL (souvent en \textit{snake\_case}) vers des objets TypeScript normalisés en \textit{camelCase}. Cela assure une cohérence parfaite sur l'ensemble du client.
+    \item \textbf{Gestion d'état avec Hooks} : La logique de jeu, complexe par nature, a été isolée dans des \textit{Custom Hooks} (ex: \texttt{useSoloGame}). Cette approche permet de séparer le calcul du score et le timing de l'affichage visuel des composants.
+\end{itemize}
+
+\subsection{Architecture Backend (PHP Natif)}
+Le serveur a été conçu comme une \textbf{API RESTful} robuste. Contrairement à une approche PHP classique mélangeant HTML et logique, notre backend ne sert que du contenu de type \texttt{application/json}.
+
+\begin{itemize}
+    \item \textbf{Système de Contrôleurs} : Le code est segmenté par responsabilités (\textit{AuthController}, \textit{QuizController}, \textit{RoomController}). Chaque contrôleur interagit avec la base de données via \textbf{PDO}, garantissant ainsi la protection contre les injections SQL grâce aux requêtes préparées.
+    \item \textbf{Authentification Stateless (JWT)} : Pour sécuriser les échanges sans utiliser les sessions PHP traditionnelles (peu adaptées aux SPA), nous avons implémenté un système de \textbf{JSON Web Tokens}. Le serveur signe un jeton lors de la connexion, que le client renvoie dans les headers de chaque requête.
+    \item \textbf{Format de réponse unifié} : Toutes les sorties du serveur passent par une fonction utilitaire garantissant une structure de réponse constante (statut, message, données), facilitant ainsi le traitement des erreurs côté Frontend.
+\end{itemize}
+
+\subsection{Communication Client-Serveur}
+La communication repose sur la bibliothèque \textbf{Axios}. Un intercepteur a été configuré pour injecter automatiquement le token JWT dans les headers de chaque requête sortante et pour rediriger l'utilisateur vers la page de connexion en cas d'expiration de sa session (erreur 401).
+
+
+% ======================================================
+% 6. MODÈLE DE DONNÉES
+% ======================================================
+\section{Modèle de Données}
+
+La persistance des données est assurée par un système de gestion de base de données relationnelle \textbf{MySQL}. La structure a été pensée pour être évolutive, avec un total de 12 tables organisées par domaines de responsabilité.
+
+\subsection{Organisation des Tables}
+Le schéma relationnel peut être divisé en quatre grands pôles :
+\begin{itemize}
+    \item \textbf{Utilisateurs et Progression} : Les tables \texttt{users} et \texttt{user\_stats} gèrent non seulement l'authentification (mots de passe hachés), mais aussi le suivi de l'expérience (XP), du niveau et des victoires.
+    \item \textbf{Contenu des Quiz} : Une hiérarchie stricte est respectée : \texttt{categories} $\rightarrow$ \texttt{quizzes} $\rightarrow$ \texttt{questions} $\rightarrow$ \texttt{answers}. Cette structure permet une grande flexibilité dans la gestion des thématiques.
+    \item \textbf{Moteur de Jeu et Sessions} : Les tables \texttt{game\_sessions} et \texttt{game\_players} stockent l'état vivant d'une partie (en attente, en cours, terminée). C'est ici que sont gérés les scores en temps réel et les codes de salon uniques.
+    \item \textbf{Système d'Inventaire et Pénalités} : Les tables \texttt{items}, \texttt{player\_inventory} et \texttt{active\_penalties} préparent le terrain pour les mécaniques de "Battle", permettant de traquer quel joueur possède quel objet et quel malus est appliqué à qui.
+\end{itemize}
+
+\subsection{Usage du format JSON pour les Brouillons}
+Une particularité technique de notre modèle réside dans la table \texttt{quiz\_drafts}. Pour le "Studio", nous avons fait le choix d'utiliser le type \textbf{JSON} pour la colonne \texttt{content}.
+\\
+\\
+Ce choix s'explique par la nature flexible d'un brouillon : un utilisateur peut modifier radicalement la structure de ses questions sans que nous ayons besoin de valider l'intégrité relationnelle complète avant la publication finale. Cela simplifie considérablement les échanges entre le Frontend (qui manipule des objets JSON) et le Backend.
+
+\subsection{Sécurité et Intégrité}
+L'intégrité des données est garantie par l'utilisation rigoureuse de clés étrangères avec des contraintes \texttt{ON DELETE CASCADE}. Par exemple, la suppression d'un utilisateur entraîne automatiquement le nettoyage de ses statistiques et de son inventaire, évitant ainsi la présence de données orphelines. Enfin, l'accès aux données depuis PHP se fait exclusivement via \textbf{PDO} avec des paramètres liés, rendant les attaques par injection SQL impossibles.
+
+
+
+% ======================================================
+% 7. CHOIX TECHNIQUES ET DIFFICULTÉS
+% ======================================================
+\section{Choix Techniques et Difficultés}
+
+Le développement d'une application de cette envergure impose des choix technologiques structurants pour répondre aux contraintes de temps et de qualité.
+
+\subsection{L'adoption de TypeScript}
+Le passage de JavaScript à \textbf{TypeScript} a été l'un des choix les plus bénéfiques du projet. 
+\begin{itemize}
+    \item \textbf{Sécurité du code} : Le typage strict des entités (ex: l'interface \texttt{GameSession} ou \texttt{User}) a permis d'éliminer une grande partie des erreurs de logique avant même l'exécution du code.
+    \item \textbf{Auto-complétion et Maintenance} : Dans un projet comportant plus de 100 fichiers, la capacité de l'IDE à comprendre la structure des objets facilite grandement le \textit{refactoring} et la collaboration.
+\end{itemize}
+
+\subsection{Difficultés Rencontrées et Solutions}
+
+\subsubsection{Communication Cross-Origin (CORS) et Proxy}
+Durant la phase de développement, le frontend (servi par Vite sur le port 5173) et le backend (servi par PHP sur le port 8000) sont considérés comme deux origines différentes par le navigateur. Cela a initialement bloqué toutes les requêtes API. 
+\\
+\\
+\textbf{Solution :} Plutôt que d'ouvrir totalement les politiques CORS (ce qui est peu sécurisé), nous avons configuré un \textbf{Proxy inverse} dans le fichier \texttt{vite.config.ts}. Ce dernier redirige de manière transparente les appels \texttt{/api} vers le serveur PHP, simulant ainsi une origine unique.
+
+\subsubsection{Synchronisation et "Pseudo Temps Réel"}
+L'absence de WebSockets (non couverts dans le cadre du cours de PHP natif) a rendu complexe la gestion des salons multi-joueurs (\textit{Lobbies}). Comment savoir si un joueur a rejoint la salle sans que le serveur ne puisse "pousser" l'information au client ?
+\\
+\\
+\textbf{Solution :} Nous avons implémenté une logique de \textbf{Polling} (appels récurrents à intervalles réguliers) côté client, couplée à une gestion d'états très stricte en base de données. Bien que plus gourmande en ressources qu'une connexion par socket, cette méthode assure une compatibilité parfaite avec un hébergement PHP standard tout en offrant une expérience utilisateur fluide.
+
+\subsubsection{Le Studio de Création : Complexité de l'État}
+Le Studio de création est la partie la plus complexe du Frontend. Gérer l'ajout, la suppression, la réorganisation des questions et la validation des réponses en temps réel demande une gestion d'état avancée.
+\\
+\\
+\textbf{Solution :} Nous avons utilisé le hook \texttt{useReducer} pour centraliser la logique de modification du quiz. Cela permet de garantir que chaque action de l'utilisateur (ex: "Définir la bonne réponse") produise un état prévisible et facile à sauvegarder sous forme de brouillon.
+
+
+
+% ======================================================
+% 8. RÉPARTITION DES TÂCHES
+% ======================================================
+\section{Répartition des Tâches}
+
+Conformément aux modalités du projet, la charge de travail a été répartie entre les membres du groupe afin de couvrir l'ensemble du spectre "Fullstack". Bien que nous ayons collaboré sur les choix d'architecture globaux, les responsabilités principales ont été définies comme suit :
+
+\begin{itemize}
+    \item \textbf{BERRUEZO Arthur} : 
+    \begin{itemize}
+        \item \textbf{Architecture Frontend} : Configuration de l'environnement de développement sous Vite et structuration globale du projet React en Single Page Application.
+        \item \textbf{Logique Métier Client} : Implémentation des mécanismes de gestion d'état complexe via les Hooks (\textit{useState}, \textit{useEffect}) et sécurisation des routes côté client.
+        \item \textbf{Moteurs Applicatifs} : Développement intégral du moteur de jeu Solo (gestion du cycle de vie des questions et calcul du score) et du moteur de gestion du Studio de création (manipulation dynamique des données du quiz).
+    \end{itemize}
+    
+    \item \textbf{VOLIANSKYI Nikita} : 
+    \begin{itemize}
+        \item \textbf{Infrastructure Backend} : Conception de l'architecture serveur en PHP natif et mise en place d'un système de routage modulaire pour l'API REST.
+        \item \textbf{Gestion des Ressources} : Développement des contrôleurs métier assurant la distribution des données de quiz, la gestion des catégories et le traitement des requêtes HTTP.
+        \item \textbf{Sécurisation Stateless} : Implémentation du système d'authentification par JSON Web Tokens (JWT), incluant la signature HMAC-SHA256 et la vérification des headers d'autorisation.
+    \end{itemize}
+    
+    \item \textbf{MELKONIAN Mark} : 
+    \begin{itemize}
+        \item \textbf{Ingénierie des Données} : Modélisation du schéma MySQL (12 tables) et optimisation des requêtes via PDO.
+        \item \textbf{Logique Backend Studio} : Développement des contrôleurs dédiés à la création et à l'édition des quiz.
+        \item \textbf{Gestion des Brouillons} : Conception d'un stockage hybride en base de données via le type JSON.
+    \end{itemize}
+\end{itemize}
+
+% ======================================================
+% 9. CONCLUSION
+% ======================================================
+\section{Conclusion}
+
+La réalisation de \textbf{Quiz Battle} a été une expérience particulièrement formatrice. Ce projet nous a permis de mettre en pratique les fondamentaux du développement web (HTML, CSS, PHP, SQL) tout en nous confrontant aux réalités du développement moderne avec React et TypeScript.
+
+\subsection{Bilan Technique}
+L'objectif initial de créer une plateforme robuste et sécurisée a été atteint. L'utilisation d'une architecture découplée (API REST d'un côté, SPA de l'autre) s'est avérée être un choix judicieux, facilitant le débogage et permettant une évolution indépendante des deux parties du projet. La rigueur imposée par TypeScript et l'organisation en "Pattern Repository" nous ont permis de livrer un code structuré, proche des standards de l'industrie informatique.
+
+\subsection{Perspectives}
+Le projet a été conçu avec une vision à long terme. Plusieurs pistes d'amélioration sont envisageables :
+\begin{itemize}
+    \item \textbf{WebSockets} : Remplacer le système de \textit{polling} par une connexion persistante pour un mode multijoueur en temps réel instantané.
+    \item \textbf{Gamification} : Étendre le système d'inventaire et introduire des classements mondiaux (Leaderboards).
+    \item \textbf{Accessibilité} : Améliorer la conformité aux normes WCAG pour rendre la plateforme utilisable par le plus grand nombre.
+\end{itemize}
+
+En conclusion, ce projet a non seulement validé nos compétences techniques en L2 Informatique, mais il nous a également appris à gérer la complexité d'une application complète, de la modélisation des données jusqu'à l'expérience utilisateur finale.
+
+
+\end{document}
