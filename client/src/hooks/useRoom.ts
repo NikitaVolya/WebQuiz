@@ -25,9 +25,12 @@ export const useRoom = (currentUserId?: number) => {
     setIsLoading(true);
     setError(null);
     try {
-      await gameService.initializeGame({ quizId, mode, modifier });
+      const code = await gameService.initializeGame({ quizId, mode, modifier });
+      return code;
     } catch (err: any) {
-      setError(err.message || "Erreur lors de la création");
+      const msg = err.message || "Erreur lors de la création";
+      setError(msg);
+      throw new Error(msg);
     } finally {
       setIsLoading(false);
     }

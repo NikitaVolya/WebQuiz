@@ -203,7 +203,11 @@ const StudioView: React.FC<{ onExit: () => void }> = ({ onExit }) => {
         quiz={quiz} 
         dispatch={dispatch} 
         onSave={handleSave} 
-        onExit={() => setIsEditing(false)} 
+        onExit={async () => {
+          const updated = await fetchDrafts();
+          setDraftList(updated);
+          setIsEditing(false);
+        }}
       />
     </div>
   );

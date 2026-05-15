@@ -67,9 +67,14 @@ const StudioEngine: React.FC<StudioEngineProps> = ({ quiz, dispatch, onSave, onE
     if (window.innerWidth <= 1024) setIsSidebarOpen(false);
   };
 
-  const handleSmartExit = () => {
-    onSave(false);
-    onExit();
+  const handleSmartExit = async () => {
+    try {
+      console.log("Save");
+      onSave(false); 
+      onExit();
+    } catch (err) {
+      console.error("Échec de la sauvegarde à la fermeture");
+    }
   };
 
   return (

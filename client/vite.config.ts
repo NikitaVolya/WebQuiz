@@ -5,8 +5,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // Detecton URL qui commence par /auth ou /quizzes
-      // Rediriger vers le PHP (le port 8000)
+      // Detecton URL
+      // Redirige vers le PHP (le port 8000)
       '/auth': {
         target: 'http://localhost:8000',
         changeOrigin: true,
@@ -27,6 +27,12 @@ export default defineConfig({
         secure: false,
       },
       '/studio': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+        xfwd: true
+      },
+      '/rooms': {
         target: 'http://localhost:8000',
         changeOrigin: true,
         secure: false,

@@ -16,7 +16,7 @@
   border-radius: 14px;
   display: flex;
   align-items: center;
-  padding: 0 15px;
+  padding: 10px 15px;
   height: 48px;
   transition: all 0.2s ease;
 }

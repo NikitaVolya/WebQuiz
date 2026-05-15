@@ -2,8 +2,10 @@
  * @file services/gameService.ts
  * Orchestre la logique de jeu et la communication temps-réel.
  */
-import { JsonGameRepository as gameRepo } from '../repositories/json/JsonGameRepository';
 import type { GameSession, GameMode, GameModifier } from "../types/game";
+// import { JsonGameRepository as gameRepo } from '../repositories/json/JsonGameRepository';
+import { ApiGameRepository } from '../repositories/api/ApiGameRepository';
+const gameRepo = new ApiGameRepository();
 
 export const gameService = {
   /**
@@ -23,9 +25,9 @@ export const gameService = {
       params.mode,
       params.modifier
     );
+
+    console.log(roomCode);
     
-    // 3. Le joueur qui crée rejoint automatiquement
-    // Note: Le repo récupérera l'utilisateur actuel en interne ou via le serveur
     await gameRepo.joinRoom(roomCode);
     
     return roomCode;
@@ -36,8 +38,8 @@ export const gameService = {
    */
   joinExistingGame: async (code: string): Promise<void> => {
     const formattedCode = code.toUpperCase().trim();
-    if (formattedCode.length !== 4) {
-        throw new Error("Le code doit comporter 4 caractères.");
+    if (formattedCode.length !== 6) {
+        throw new Error("Le code doit comporter 6 caractères.");
     }
     
     await gameRepo.connect();

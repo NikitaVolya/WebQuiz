@@ -72,7 +72,7 @@ export const useAuth = () => {
   return { 
     user, 
     isPending, 
-    error, 
+    error,
     setError, 
     signIn, 
     signUp, 

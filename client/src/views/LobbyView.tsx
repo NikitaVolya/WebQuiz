@@ -1,7 +1,8 @@
 /**
  * @file views/LobbyView.tsx
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useRoom } from '../hooks/useRoom';
 import { useQuiz } from '../hooks/useQuiz';
 import { User as UserIcon, Copy, Play, ArrowLeft, Share2, ShieldCheck } from 'lucide-react';
@@ -12,39 +13,79 @@ import type { User } from '../types/auth';
 import styles from './LobbyView.module.css';
 
 interface LobbyProps {
-  config: GameConfig;
+  config?: GameConfig;
   user: User;
   onExit: () => void;
 }
 
 export const LobbyView = ({ config, user, onExit }: LobbyProps) => {
-  // 1. Hook de Salle
-  const { session, isLoading: roomLoading, create, isHost } = useRoom(user?.id);
+  const { roomCode } = useParams<{ roomCode: string }>();
+  const navigate = useNavigate();
+
+  const { session, isLoading: roomLoading, create, join, isHost, error } = useRoom(user?.id);
   
-  // 2. Hook de Quiz
   const { getFullQuiz, loading: quizLoading } = useQuiz();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
 
+  const initialized = useRef(false);
+
   useEffect(() => {
+    if (initialized.current) return;
+
     const init = async () => {
-      // Charger les détails du quiz
-      getFullQuiz(config.quizId).then(setQuiz);
-
-      // Créer la salle
-      await create(config.quizId, config.mode, config.modifier);
+      if (config && !roomCode) {
+        initialized.current = true;
+        await create(config.quizId, config.mode, config.modifier);
+      }
+      else if (roomCode) {
+        initialized.current = true;
+        await join(roomCode);
+      }
     };
-
+    
     init();
-  }, [config.quizId]);
+  }, [roomCode, config]);
 
-  // Si on charge ou si la session n'est pas encore prête
-  if (roomLoading || quizLoading || !session) return <GameLoader />;
+  useEffect(() => {
+    if (roomCode) return; 
+
+    if (session?.roomCode) {
+      navigate(`/lobby/${session.roomCode}`, { replace: true });
+    }
+  }, [session?.roomCode, roomCode, navigate]);
+
+  useEffect(() => {
+    if (session?.quizId) {
+      getFullQuiz(session.quizId).then(setQuiz);
+    }
+  }, [session?.quizId]);
+
+  if (error) {
+    return (
+      <div className={styles.errorContainer}>
+        <p>{error}</p>
+        <button onClick={onExit}>Retour à l'accueil</button>
+      </div>
+    );
+  }
+
+  if (roomLoading && !session) return <GameLoader />;
+  if (quizLoading || !session) return <GameLoader />;
+
+  const hostPlayer = session.players.find(p => p.isHost);
+  const hostName = hostPlayer?.username || "Inconnu";
+
+  const copyToClipboard = () => {
+    if (session.roomCode) {
+      navigator.clipboard.writeText(session.roomCode);
+    }
+  };
 
   const PlayerCode = () => (
     <div className={styles.codeContainer}>
       <span className={styles.codeLabel}>CODE</span>
       <span className={styles.codeValue}>{session.roomCode}</span>
-      <button className={styles.miniCopy} title="Copier le code">
+      <button className={styles.miniCopy} title="Copier le code" onClick={copyToClipboard}>
         <Copy size={14} />
       </button>
     </div>
@@ -57,8 +98,8 @@ export const LobbyView = ({ config, user, onExit }: LobbyProps) => {
           <ArrowLeft size={20} />
         </button>
         <div className={styles.gameInfo}>
-          <span className={styles.badge}>{config.modifier}</span>
-          <p>Salle de {session.players[0].username}</p>
+          <span className={styles.badge}>{session.modifier}</span>
+          <p>Salle de {hostName}</p>
         </div>
         <div className={styles.desktopCode}>
           <PlayerCode />
@@ -109,7 +150,7 @@ export const LobbyView = ({ config, user, onExit }: LobbyProps) => {
                   <img src={quiz.imageUrl} alt={quiz.title} />
                   <div className={styles.quizMeta}>
                       <h4>{quiz.title}</h4>
-                      <p>{quiz.questions.length} questions • {config.mode}</p>
+                      <p>{quiz.questions.length} questions • {session.mode}</p>
                   </div>
               </div>
             )}

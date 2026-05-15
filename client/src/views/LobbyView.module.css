@@ -8,7 +8,6 @@
   overflow: hidden;
 }
 
-/* --- TOP BAR --- */
 .topBar {
   height: 70px;
   padding: 0 24px;
@@ -31,9 +30,13 @@
   transition: background 0.2s;
 }
 
-.backBtn:hover { background: var(--bg-hover); }
+.backBtn:hover {
+  background: var(--bg-hover);
+}
 
-.gameInfo { text-align: center; }
+.gameInfo {
+  text-align: center;
+}
 
 .badge {
   font-size: 10px;
@@ -43,7 +46,11 @@
   letter-spacing: 1px;
 }
 
-.gameInfo p { margin: 0; font-size: 14px; color: var(--text-secondary); }
+.gameInfo p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
 
 .codeContainer {
   background: var(--bg-main);
@@ -54,12 +61,33 @@
   gap: 12px;
 }
 
-.codeLabel { font-size: 10px; color: var(--text-muted); font-weight: 700; }
-.codeValue { font-family: 'Monaco', monospace; font-size: 18px; font-weight: 800; color: var(--accent); }
-.miniCopy { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; border-radius: 4px; }
-.miniCopy:hover { color: var(--text-main); background: var(--bg-hover); }
+.codeLabel {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
 
-/* --- MAIN CONTENT --- */
+.codeValue {
+  font-family: 'Monaco', monospace;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.miniCopy {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.miniCopy:hover {
+  color: var(--text-main);
+  background: var(--bg-hover);
+}
+
 .mainContent {
   flex: 1;
   display: grid;
@@ -69,17 +97,6 @@
   overflow: hidden;
 }
 
-/* --- RESPONSIVE MOBILE --- */
-@media (max-width: 768px) {
-  .mainContent { 
-    grid-template-columns: 1fr;
-    padding: 16px;
-  }
-  .detailsSidebar { display: none; }
-  .topBar { padding: 0 16px; }
-}
-
-/* --- PLAYER LIST --- */
 .playersSection {
   background: var(--bg-card);
   border-radius: 24px;
@@ -97,8 +114,16 @@
   border-bottom: 1px solid var(--border);
 }
 
-.sectionHeader h3 { margin: 0; font-size: 1.1rem; }
-.count { font-weight: 700; color: var(--text-muted); font-size: 0.9rem; }
+.sectionHeader h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.count {
+  font-weight: 700;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
 
 .scrollArea {
   flex: 1;
@@ -106,7 +131,9 @@
   padding: 16px;
 }
 
-.scrollArea::-webkit-scrollbar { width: 0; }
+.scrollArea::-webkit-scrollbar {
+  width: 0;
+}
 
 .playerCard {
   display: flex;
@@ -120,7 +147,9 @@
   transition: all 0.2s;
 }
 
-.playerCard:hover { border-color: var(--border); }
+.playerCard:hover {
+  border-color: var(--border);
+}
 
 .playerAvatar {
   width: 48px;
@@ -140,12 +169,26 @@
   border-color: rgba(245, 158, 11, 0.3);
 }
 
-.playerName { flex: 1; display: flex; flex-direction: column; gap: 2px; }
-.playerName span { font-weight: 600; color: var(--text-main); }
-.playerName small { color: var(--text-muted); font-size: 11px; }
+.playerName {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.playerName span {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.playerName small {
+  color: var(--text-muted);
+  font-size: 11px;
+}
 
 .statusDot {
-  width: 12px; height: 12px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--border);
 }
@@ -155,7 +198,6 @@
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
 }
 
-/* --- SIDEBAR (PC ONLY) --- */
 .detailsSidebar {
   display: flex;
   flex-direction: column;
@@ -170,27 +212,48 @@
 }
 
 .quizPreviewSmall img {
-  width: 100%; height: 160px;
+  width: 100%;
+  height: 160px;
   object-fit: cover;
 }
 
-.quizMeta { padding: 16px; }
-.quizMeta h4 { margin: 0 0 4px 0; font-size: 1rem; }
-.quizMeta p { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+.quizMeta {
+  padding: 16px;
+}
 
-.inviteBox p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 16px; }
+.quizMeta h4 {
+  margin: 0 0 4px 0;
+  font-size: 1rem;
+}
+
+.quizMeta p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.inviteBox p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
 
 .shareBtn {
-  width: 100%; padding: 14px;
-  background: var(--text-main); 
+  width: 100%;
+  padding: 14px;
+  background: var(--text-main);
   color: var(--bg-main);
-  border: none; border-radius: 12px;
-  font-weight: 700; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   transition: opacity 0.2s;
 }
 
-/* --- FOOTER --- */
 .footer {
   height: 100px;
   padding: 0 24px;
@@ -201,26 +264,43 @@
   justify-content: center;
 }
 
-.footerContent { width: 100%; max-width: 500px; }
+.footerContent {
+  width: 100%;
+  max-width: 500px;
+}
 
 .launchBtn {
-  width: 100%; padding: 18px;
-  background: var(--accent); color: white;
-  border: none; border-radius: 20px;
-  font-weight: 800; font-size: 1.1rem;
-  cursor: pointer; display: flex; align-items: center;
-  justify-content: center; gap: 12px;
+  width: 100%;
+  padding: 18px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   box-shadow: 0 10px 30px rgba(var(--accent-rgb), 0.3);
 }
 
 .waitingMessage {
-  display: flex; align-items: center; justify-content: center; gap: 16px;
-  color: var(--text-secondary); font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .pulse {
-  width: 14px; height: 14px; background: var(--accent);
-  border-radius: 50%; animation: pulse 2s infinite;
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
@@ -229,57 +309,63 @@
   100% { transform: scale(1); opacity: 1; }
 }
 
-
-
-
-/* --- 1. Top Bar : Code à droite --- */
-.topBar {
-  /* On s'assure que le codeContainer reste bien collé à droite */
-  display: flex;
-  justify-content: space-between; 
-}
-
-.mobileQuizHeader {
+.mobileQuizHeader,
+.mobileShareBtn {
   display: none;
 }
 
 .mobileCodeWrapper {
-    display: flex;
-}
-
-.mobileShareBtn {
-    display: none;
+  display: flex;
 }
 
 @media (max-width: 768px) {
+  .topBar {
+    padding: 0 16px;
+  }
 
-    .mobileShareBtn {
-        width: 100%; padding: 14px;
-        background: var(--text-main); 
-        color: var(--bg-main);
-        border: none; border-radius: 12px;
-        font-weight: 700; cursor: pointer;
-        display: flex; align-items: center; justify-content: center; gap: 8px;
-        transition: opacity 0.2s;
-    }
+  .mainContent {
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+  }
 
-    .desktopCode { display: none; }
+  .detailsSidebar,
+  .desktopCode {
+    display: none;
+  }
 
-    .mobileCodeWrapper {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        background: var(--bg-card);
-        padding: 12px;
-        border-radius: 20px;
-        border: 1px solid var(--border);
-    }
+  .mobileShareBtn {
+    display: flex;
+    width: 100%;
+    padding: 14px;
+    background: var(--text-main);
+    color: var(--bg-main);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: opacity 0.2s;
+  }
 
-    .mobileQuizHeader {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+  .mobileCodeWrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-card);
+    padding: 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .mobileQuizHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
   .mobileQuizContent {
     display: flex;
@@ -298,20 +384,13 @@
     object-fit: cover;
   }
 
-  .mobileQuizInfo h4 { margin: 0; font-size: 1rem; color: var(--text-main); }
-
-  .mainContent {
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-  }
-
-  .detailsSidebar {
-    display: none;
+  .mobileQuizInfo h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text-main);
   }
 }
 
-/* --- 3. Sidebar PC (Inchangée mais pour rappel) --- */
 @media (min-width: 769px) {
   .detailsSidebar {
     display: flex;

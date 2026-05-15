@@ -15,8 +15,16 @@ export class StudioMapper {
       isPrivate: Boolean(raw.is_private),
       questionsCount: raw.questions_count || 0,
       questions: raw.questions ? raw.questions.map((q: any) => ({
-        ...q,
-        tempId: q.temp_id || q.id.toString()
+        tempId: q.temp_id || q.id?.toString() || crypto.randomUUID(),
+        questionText: q.question_text || '',
+        imageUrl: q.image_url || '',
+        timerSeconds: q.timer_seconds || 20,
+        pointsValue: q.points_value || 100,
+        answers: q.answers ? q.answers.map((a: any) => ({
+          tempId: a.temp_id || a.id?.toString() || crypto.randomUUID(),
+          answerText: a.answer_text || '',
+          isCorrect: Boolean(a.is_correct)
+        })) : []
       })) : []
     };
   }

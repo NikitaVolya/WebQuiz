@@ -11,6 +11,7 @@ export class ApiStudioRepository implements IStudioRepository {
   */
   async getAllDrafts(): Promise<DraftSummary[]> {
     const response = await api.get('/studio/drafts');
+    console.log(response);
     return response.data.map((item: any) => StudioMapper.toSummary(item));
   }
 
@@ -37,13 +38,31 @@ export class ApiStudioRepository implements IStudioRepository {
       const isNew = draft.id === 'new';
       const endpoint = isNew ? '/studio/drafts' : `/studio/drafts/${draft.id}`;
       
-      const response = await api.post(endpoint, {
-        ...draft,
-        category_id: draft.categoryId,
-        image_url: draft.imageUrl,
-        is_private: draft.isPrivate
-      });
+      const payload = {
+        id: draft.id,
+        title: draft.title || '',
+        description: draft.description || '',
+        category_id: draft.categoryId || null,
+        image_url: draft.imageUrl || '',
+        is_published: draft.isPublished || false,
+        is_private: draft.isPrivate || false,
+        questions: draft.questions.map(q => ({
+          temp_id: q.tempId,
+          question_text: q.questionText || '',
+          image_url: q.imageUrl || '',
+          timer_seconds: q.timerSeconds || 20,
+          points_value: q.pointsValue || 100,
+          answers: q.answers.map(a => ({
+            temp_id: a.tempId,
+            answer_text: a.answerText || '',
+            is_correct: a.isCorrect === true
+          }))
+        }))
+      };
 
+      console.log("DEBUG PAYLOAD:", JSON.stringify(payload, null, 2));
+
+      const response = await api.post(endpoint, payload);
       return response.status === 200 || response.status === 201;
     } catch (error) {
       console.error("Erreur saveDraft:", error);
