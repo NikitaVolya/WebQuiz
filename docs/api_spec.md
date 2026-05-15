@@ -4,91 +4,146 @@
 
 ---
 
-## 1. Module Auth & Users
+# 1. Module Auth & Users
 Gestion des comptes et des profils.
 
-### [POST] `/api/auth/login`
-- **Description :** Reçoit les identifiants, vérifie le hash du mot de passe en BDD et génère un jeton de session (JWT).
-- **Entrée :** `{ "email": "...", "password": "..." }`
-- **Sortie :** `User` (objet) + `token` (string)
+## [POST] `/api/auth/login`
+
+- **Description :** Reçoit les identifiants, vérifie le hash du mot de passe en BDD et génère un jeton JWT.
+- **Entrée :**
+
+```json
+{
+  "email": "...",
+  "password": "..."
+}
+```
+
+- **Sortie :** `User` + `token`
 - **Repo :** `authenticate()`
-
-### [POST] `/api/auth/register`
-- **Description :** Crée une entrée en table `users` et initialise une ligne correspondante dans `user_stats`.
-- **Entrée :** `{ "username": "...", "email": "...", "password": "..." }`
-- **Sortie :** `User` (objet)
-- **Repo :** `create()`
-
-### [GET] `/api/auth/exists`
-- **Description :** Permet de vérifier en temps réel si un email ou username est déjà pris lors de l'inscription.
-- **Params :** `?field=email|username&value=...`
-- **Repo :** `exists()`
-
-### [GET] `/api/users/:id`
-- **Description :** Récupère les informations détaillées d'un profil (avatar, rôle, date de création).
-- **Sortie :** `{ "id": 1, "username": "...", "avatar_url": "...", "role": "USER", "created_at": "..." }`
-- **Repo :** `getUserById()`
-
-### [GET] `/api/users/:id/stats`
-- **Description :** Récupère les données de progression (score total, victoires, niveau, expérience).
-- **Sortie :** `{ "user_id": 1, "total_score": 500, "level": 5, "experience": 1200, "games_played": 10, "victories": 3 }`
 
 ---
 
-## 2. Module Quiz
-Contenu et catalogue.
+## [POST] `/api/auth/register`
 
-### [GET] `/api/quizzes`
-- **Description :** Liste globale pour la page d'accueil. 
-- **Format :** Format léger (sans les questions).
-- **Obligatoire :** Doit retourner le champ `questions_count`.
+- **Description :** Crée un nouveau compte utilisateur.
+- **Entrée :**
+
+```json
+{
+  "username": "...",
+  "email": "...",
+  "password": "..."
+}
+```
+
+- **Sortie :** `User`
+- **Repo :** `create()`
+
+---
+
+## [GET] `/api/auth/exists`
+
+- **Description :** Vérifie si un email ou username existe déjà.
+- **Params :**
+
+```txt
+?field=email|username&value=...
+```
+
+- **Repo :** `exists()`
+
+---
+
+## [GET] `/api/users/:id`
+
+- **Description :** Retourne les informations publiques d'un utilisateur.
+
+### Response
+
+```json
+{
+  "id": 1,
+  "username": "John",
+  "avatar_url": "...",
+  "role": "USER",
+  "created_at": "2026-01-01T10:00:00Z"
+}
+```
+
+- **Repo :** `getUserById()`
+
+---
+
+## [GET] `/api/users/:id/stats`
+
+- **Description :** Retourne les statistiques du joueur.
+
+### Response
+
+```json
+{
+  "user_id": 1,
+  "total_score": 500,
+  "level": 5,
+  "experience": 1200,
+  "games_played": 10,
+  "victories": 3
+}
+```
+
+---
+
+# 2. Module Quiz
+Catalogue des quiz et catégories.
+
+## [GET] `/api/quizzes`
+
+- **Description :** Retourne la liste des quiz.
+- **Format :** Léger (sans questions)
+- **Obligatoire :** `questions_count`
 - **Repo :** `findAll()`
 
-### [GET] `/api/quizzes/:id`
-- **Description :** Chargement complet du quiz avant de lancer une partie.
-- **Format :** Format lourd. Jointure SQL nécessaire : `Quiz` ➔ `Questions` ➔ `Answers`.
+---
+
+## [GET] `/api/quizzes/:id`
+
+- **Description :** Retourne un quiz complet avec questions et réponses.
 - **Repo :** `findById()`
 
-### [GET] `/api/categories`
-- **Description :** Liste tous les thèmes disponibles (id, name, color_code, image_url).
+---
+
+## [GET] `/api/categories`
+
+- **Description :** Retourne toutes les catégories.
 - **Repo :** `findAllCategories()`
 
-### [GET] `/api/quizzes?category_id=...`
-- **Description :** Filtre la liste des quiz pour n'afficher que ceux appartenant à une catégorie spécifique.
-- **Paramètre :** `category_id` (ID numérique de la catégorie).
-- **Format :** Format léger (sans les questions).
+---
+
+## [GET] `/api/quizzes?category_id=...`
+
+- **Description :** Filtre les quiz par catégorie.
 - **Repo :** `findByCategory()`
 
-### [GET] `/api/quizzes/search?q=...`
-- **Description :** Effectue une recherche textuelle sur les quiz existants.
-- **Paramètre :** `q` (chaîne de caractères). Le serveur doit chercher dans les colonnes `title` et `description`.
-- **Format :** Format léger.
+---
+
+## [GET] `/api/quizzes/search?q=...`
+
+- **Description :** Recherche textuelle dans les quiz.
 - **Repo :** `search()`
 
-### [GET] `/api/categories/:id`
-- **Description :** Récupère les informations détaillées d'une seule catégorie.
-- **Sortie :** `{ "id": 1, "name": "...", "color_code": "...", "image_url": "..." }`
+---
+
+## [GET] `/api/categories/:id`
+
+- **Description :** Retourne les détails d'une catégorie.
 - **Repo :** `getCategoryById()`
 
 ---
 
-## 3. Module Game (Temps Réel)
-Logique de session via HTTP et WebSockets.
+# 3. Module Rooms (Game Sessions)
 
-### [POST] `/api/rooms` (HTTP)
-- **Description :** Le serveur génère un `room_code` unique et prépare l'instance de jeu en mémoire.
-- **Entrée :** `{ "quiz_id": 1, "mode": "MULTIPLAYER", "modifier": "CLASSIC" }`
-- **Sortie :** `{ "room_code": "ABCD12" }`
-- **Repo :** `createRoom()`
-
-# Spécifications API - Module Rooms (Quiz App)
-
-> **Note importante :** Toutes les données JSON utilisent le format **snake_case**. Le serveur gère toute la logique de jeu (scores, progression, validation des réponses).
-
----
-
-### 4. Module Rooms (Game Sessions)
-Gestion des salles, des joueurs et du déroulement du quiz.
+Gestion des salles, des joueurs et de la progression des parties.
 
 ---
 
@@ -96,7 +151,7 @@ Gestion des salles, des joueurs et du déroulement du quiz.
 
 ### Description
 
-Crée une nouvelle salle de jeu et génère un `room_code` unique.
+Crée une nouvelle salle de jeu.
 
 ### Auth
 
@@ -131,7 +186,7 @@ Crée une nouvelle salle de jeu et génère un `room_code` unique.
 
 ### Description
 
-Permet à un joueur de rejoindre une salle en statut LOBBY.
+Permet à un joueur de rejoindre une salle.
 
 ### Auth
 
@@ -147,9 +202,9 @@ Permet à un joueur de rejoindre une salle en statut LOBBY.
 
 ### Règles
 
-* Refus si la partie est déjà commencée (`status != LOBBY`)
-* Refus si salle pleine
-* Refus si joueur déjà présent
+- Impossible de rejoindre si partie commencée
+- Impossible de rejoindre si salle pleine
+- Impossible de rejoindre deux fois
 
 ### Response
 
@@ -169,7 +224,7 @@ Permet à un joueur de rejoindre une salle en statut LOBBY.
 
 ### Description
 
-Démarre la partie (uniquement host).
+Démarre une partie.
 
 ### Auth
 
@@ -177,13 +232,8 @@ Démarre la partie (uniquement host).
 
 ### Conditions
 
-* `status == LOBBY`
-* `user == host_id`
-
-### Effet
-
-* Passe `status` à `PLAYING`
-* Définit `started_at`
+- `status == LOBBY`
+- `user == host_id`
 
 ### Response
 
@@ -203,7 +253,7 @@ Démarre la partie (uniquement host).
 
 ### Description
 
-Retourne l'état global de la session.
+Retourne l'état actuel d'une salle.
 
 ### Response
 
@@ -215,7 +265,7 @@ Retourne l'état global de la session.
   "modifier": "CLASSIC",
   "current_question_index": 0,
   "max_players": 8,
-  "players_count": 3
+  "players_count": 4
 }
 ```
 
@@ -229,7 +279,7 @@ Retourne l'état global de la session.
 
 ### Description
 
-Retourne la question actuelle + réponses.
+Retourne la question actuelle.
 
 ### Auth
 
@@ -237,17 +287,23 @@ Retourne la question actuelle + réponses.
 
 ### Conditions
 
-* `status == PLAYING`
+- `status == PLAYING`
 
 ### Response
 
 ```json
 {
   "id": 10,
-  "question_text": "...",
+  "question_text": "Question ?",
   "answers": [
-    { "id": 1, "answer_text": "A" },
-    { "id": 2, "answer_text": "B" }
+    {
+      "id": 1,
+      "answer_text": "Réponse A"
+    },
+    {
+      "id": 2,
+      "answer_text": "Réponse B"
+    }
   ]
 }
 ```
@@ -279,16 +335,10 @@ Soumet une réponse utilisateur.
 
 ### Règles
 
-* Refus si jeu non démarré
-* Refus si utilisateur pas dans la salle
-* Refus si déjà répondu
-* `answer_id` peut être `null` (timeout / auto-submit)
-
-### Effets
-
-* Stocke dans `player_answers`
-* Met à jour score si correct
-* Déclenche auto-advance si tous ont répondu
+- Refus si partie non démarrée
+- Refus si joueur absent
+- Refus si déjà répondu
+- `answer_id` peut être `null`
 
 ### Response
 
@@ -308,11 +358,11 @@ Soumet une réponse utilisateur.
 
 ### Description
 
-Passe à la question suivante (host uniquement).
+Passe à la question suivante.
 
 ### Auth
 
-✔ JWT requis (host)
+✔ JWT requis (host uniquement)
 
 ### Response
 
@@ -332,7 +382,7 @@ Passe à la question suivante (host uniquement).
 
 ### Description
 
-Retourne le leaderboard final.
+Retourne le classement final.
 
 ### Auth
 
@@ -360,50 +410,197 @@ Retourne le leaderboard final.
 
 ---
 
-# 2. États de la partie
+# 4. Module Studio
 
-| État     | Description         |
-| -------- | ------------------- |
-| LOBBY    | Attente des joueurs |
-| PLAYING  | Partie en cours     |
-| RESULTS  | Résultats affichés  |
-| FINISHED | Partie terminée     |
+Gestion des brouillons et publication des quiz.
 
 ---
 
-# 3. Règles serveur
+## [GET] `/api/studio/drafts`
 
-* Le serveur est **authoritative** (score + progression)
-* Une réponse `null` est acceptée (timeout)
-* Une question avance automatiquement quand tous les joueurs ont répondu
-* Le host peut forcer la progression
-* Impossible de rejoindre une partie en cours
+### Description
+
+Retourne la liste des brouillons utilisateur non publiés.
+
+### Auth
+
+✔ JWT requis
+
+### Response
+
+```json
+[
+  {
+    "id": "uuid",
+    "title": "Quiz Histoire",
+    "image_url": "...",
+    "category_id": 1,
+    "is_published": 0
+  }
+]
+```
+
+### Repo
+
+`getDrafts()`
 
 ---
 
-# 4. Tables utilisées
+## [GET] `/api/studio/drafts/:id`
 
-* `game_sessions`
-* `game_players`
-* `questions`
-* `answers`
-* `player_answers`
-* `users`
+### Description
 
----
+Retourne un brouillon complet.
 
-# 5. Sécurité
+### Auth
 
-* Toutes les routes critiques nécessitent JWT
-* Validation du host obligatoire pour actions sensibles
-* Protection contre double submit
-* Validation des réponses côté serveur uniquement
+✔ JWT requis
+
+### Repo
+
+`getDraft()`
 
 ---
 
-## Conventions Techniques
-1. **Format Date :** ISO 8601 (`YYYY-MM-DDTHH:mm:ssZ`).
-2. **Booleans :** Utiliser les vrais types booléens (`true`/`false`).
-3. **Naming :** `snake_case` (JSON) <-> `camelCase` (TS Front).
-4. **Logique Serveur (Master) :** C'est le serveur qui gère le timer. Une fois le temps écoulé, le serveur ignore les réponses entrantes et émet le `session_update` suivant.
-5. **Sécurité :** Le serveur ne doit jamais envoyer `is_correct: true` dans la liste des réponses tant que la question n'est pas terminée.
+## [POST] `/api/studio/drafts`
+
+### Description
+
+Crée un nouveau brouillon.
+
+### Auth
+
+✔ JWT requis
+
+### Body
+
+```json
+{
+  "id": "uuid",
+  "title": "Quiz",
+  "description": "...",
+  "category_id": 1,
+  "image_url": "...",
+  "questions": []
+}
+```
+
+### Repo
+
+`save('new')`
+
+---
+
+## [POST] `/api/studio/drafts/:id`
+
+### Description
+
+Met à jour un brouillon existant.
+
+### Auth
+
+✔ JWT requis
+
+### Repo
+
+`save(id)`
+
+---
+
+## [DELETE] `/api/studio/drafts/:id`
+
+### Description
+
+Supprime un brouillon.
+
+### Auth
+
+✔ JWT requis
+
+### Response
+
+```json
+{
+  "success": true
+}
+```
+
+### Repo
+
+`delete()`
+
+---
+
+## [POST] `/api/studio/drafts/:id/publish`
+
+### Description
+
+Publie un brouillon et génère un quiz réel.
+
+### Auth
+
+✔ JWT requis
+
+### Effets
+
+- Création du quiz
+- Création des questions
+- Création des réponses
+- Passage `is_published = 1`
+
+### Response
+
+```json
+{
+  "success": true,
+  "quizId": 10
+}
+```
+
+### Repo
+
+`publish()`
+
+---
+
+# 5. États de la partie
+
+| État | Description |
+|---|---|
+| LOBBY | Salle en attente |
+| PLAYING | Partie en cours |
+| RESULTS | Résultats affichés |
+| FINISHED | Partie terminée |
+
+---
+
+# 6. Tables utilisées
+
+- `users`
+- `quizzes`
+- `questions`
+- `answers`
+- `game_sessions`
+- `game_players`
+- `player_answers`
+- `quiz_drafts`
+
+---
+
+# 7. Sécurité
+
+- JWT obligatoire sur routes sensibles
+- Validation host côté serveur
+- Validation réponses côté serveur
+- Protection anti double-submit
+- Impossible de rejoindre une partie commencée
+
+---
+
+# 8. Conventions Techniques
+
+1. Format date : ISO 8601
+2. JSON en `snake_case`
+3. Front en `camelCase`
+4. Le serveur contrôle score et progression
+5. Le serveur ne doit jamais envoyer `is_correct` avant fin de question
