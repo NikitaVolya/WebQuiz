@@ -16,8 +16,7 @@ interface DiscoverSectionProps {
 }
 
 export const DiscoverSection = ({ 
-  quizzes, 
-  isLoading,
+  quizzes,
   searchTerm,
   onSearchChange,
   onSelectQuiz,

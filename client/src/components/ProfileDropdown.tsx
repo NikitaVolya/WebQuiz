@@ -2,7 +2,7 @@
  * @file ProfileDropdown.tsx
  */
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, User, Settings, Trophy, ChevronRight } from "lucide-react";
+import { LogOut, Settings, Trophy, ChevronRight } from "lucide-react";
 import styles from "./ProfileDropdown.module.css";
 
 interface ProfileDropdownProps {
