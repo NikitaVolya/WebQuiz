@@ -81,17 +81,323 @@ Logique de session via HTTP et WebSockets.
 - **Sortie :** `{ "room_code": "ABCD12" }`
 - **Repo :** `createRoom()`
 
-### WebSockets (Events)
+# Spécifications API - Module Rooms (Quiz App)
 
-| Direction | Event | Description détaillée |
-| :--- | :--- | :--- |
-| **Client ➔ Srv** | `join_room` | Le client rejoint le canal WS du `room_code`. Le serveur broadcast l'arrivée aux autres. |
-| **Client ➔ Srv** | `set_ready` | Alerte le serveur que le joueur est prêt. Si tous les joueurs sont `ready`, le serveur démarre. |
-| **Client ➔ Srv** | `submit_answer` | Envoie `q_id` et `a_id`. Le serveur calcule les points et stocke le résultat. |
-| **Client ➔ Srv** | `leave_room` | Déconnexion propre de la salle actuelle. |
-| **Srv ➔ Client** | `session_update` | **Crucial.** Envoyé à chaque changement d'état (Passage à la question suivante, leaderboard, fin). |
-| **Srv ➔ Client** | `player_update` | Notifie d'un changement spécifique à un joueur (connexion, déconnexion, score). |
-| **Srv ➔ Client** | `error` | Envoyé en cas de salle pleine, code inexistant ou action invalide. |
+> **Note importante :** Toutes les données JSON utilisent le format **snake_case**. Le serveur gère toute la logique de jeu (scores, progression, validation des réponses).
+
+---
+
+### 4. Module Rooms (Game Sessions)
+Gestion des salles, des joueurs et du déroulement du quiz.
+
+---
+
+## [POST] `/api/rooms`
+
+### Description
+
+Crée une nouvelle salle de jeu et génère un `room_code` unique.
+
+### Auth
+
+✔ JWT requis
+
+### Body
+
+```json
+{
+  "quiz_id": 1,
+  "mode": "MULTIPLAYER",
+  "modifier": "CLASSIC"
+}
+```
+
+### Response
+
+```json
+{
+  "room_code": "ABCD12",
+  "host_id": 1
+}
+```
+
+### Repo
+
+`createRoom()`
+
+---
+
+## [POST] `/api/rooms/join`
+
+### Description
+
+Permet à un joueur de rejoindre une salle en statut LOBBY.
+
+### Auth
+
+✔ JWT requis
+
+### Body
+
+```json
+{
+  "room_code": "ABCD12"
+}
+```
+
+### Règles
+
+* Refus si la partie est déjà commencée (`status != LOBBY`)
+* Refus si salle pleine
+* Refus si joueur déjà présent
+
+### Response
+
+```json
+{
+  "message": "Joined room successfully"
+}
+```
+
+### Repo
+
+`joinRoom()`
+
+---
+
+## [POST] `/api/rooms/start/:room_code`
+
+### Description
+
+Démarre la partie (uniquement host).
+
+### Auth
+
+✔ JWT requis (host uniquement)
+
+### Conditions
+
+* `status == LOBBY`
+* `user == host_id`
+
+### Effet
+
+* Passe `status` à `PLAYING`
+* Définit `started_at`
+
+### Response
+
+```json
+{
+  "message": "Game started"
+}
+```
+
+### Repo
+
+`startGame()`
+
+---
+
+## [GET] `/api/rooms/status/:room_code`
+
+### Description
+
+Retourne l'état global de la session.
+
+### Response
+
+```json
+{
+  "id": 1,
+  "status": "PLAYING",
+  "mode": "MULTIPLAYER",
+  "modifier": "CLASSIC",
+  "current_question_index": 0,
+  "max_players": 8,
+  "players_count": 3
+}
+```
+
+### Repo
+
+`getStatus()`
+
+---
+
+## [GET] `/api/rooms/question/:room_code`
+
+### Description
+
+Retourne la question actuelle + réponses.
+
+### Auth
+
+✔ JWT requis
+
+### Conditions
+
+* `status == PLAYING`
+
+### Response
+
+```json
+{
+  "id": 10,
+  "question_text": "...",
+  "answers": [
+    { "id": 1, "answer_text": "A" },
+    { "id": 2, "answer_text": "B" }
+  ]
+}
+```
+
+### Repo
+
+`getCurrentQuestion()`
+
+---
+
+## [POST] `/api/rooms/answer/:room_code`
+
+### Description
+
+Soumet une réponse utilisateur.
+
+### Auth
+
+✔ JWT requis
+
+### Body
+
+```json
+{
+  "answer_id": 2,
+  "response_time_ms": 1500
+}
+```
+
+### Règles
+
+* Refus si jeu non démarré
+* Refus si utilisateur pas dans la salle
+* Refus si déjà répondu
+* `answer_id` peut être `null` (timeout / auto-submit)
+
+### Effets
+
+* Stocke dans `player_answers`
+* Met à jour score si correct
+* Déclenche auto-advance si tous ont répondu
+
+### Response
+
+```json
+{
+  "correct": true
+}
+```
+
+### Repo
+
+`submitAnswer()`
+
+---
+
+## [POST] `/api/rooms/next/:room_code`
+
+### Description
+
+Passe à la question suivante (host uniquement).
+
+### Auth
+
+✔ JWT requis (host)
+
+### Response
+
+```json
+{
+  "message": "Next question started"
+}
+```
+
+### Repo
+
+`forceNextQuestion()`
+
+---
+
+## [GET] `/api/rooms/results/:room_code`
+
+### Description
+
+Retourne le leaderboard final.
+
+### Auth
+
+✔ JWT requis
+
+### Response
+
+```json
+{
+  "room_code": "ABCD12",
+  "results": [
+    {
+      "user_id": 1,
+      "username": "John",
+      "score": 500,
+      "avatar_url": "..."
+    }
+  ]
+}
+```
+
+### Repo
+
+`getResults()`
+
+---
+
+# 2. États de la partie
+
+| État     | Description         |
+| -------- | ------------------- |
+| LOBBY    | Attente des joueurs |
+| PLAYING  | Partie en cours     |
+| RESULTS  | Résultats affichés  |
+| FINISHED | Partie terminée     |
+
+---
+
+# 3. Règles serveur
+
+* Le serveur est **authoritative** (score + progression)
+* Une réponse `null` est acceptée (timeout)
+* Une question avance automatiquement quand tous les joueurs ont répondu
+* Le host peut forcer la progression
+* Impossible de rejoindre une partie en cours
+
+---
+
+# 4. Tables utilisées
+
+* `game_sessions`
+* `game_players`
+* `questions`
+* `answers`
+* `player_answers`
+* `users`
+
+---
+
+# 5. Sécurité
+
+* Toutes les routes critiques nécessitent JWT
+* Validation du host obligatoire pour actions sensibles
+* Protection contre double submit
+* Validation des réponses côté serveur uniquement
 
 ---
 
