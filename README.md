@@ -12,11 +12,15 @@ Quiz Battle est une plateforme de quiz interactive et compétitive. Ce projet in
 
 ## Installation Rapide
 
-### 1. Base de données
-1.  Ouvrez votre gestionnaire MySQL (phpMyAdmin, MySQL Workbench, etc.).
-2.  Créez une base de données nommée `quiz_app`.
-3.  Importez le fichier `server/public/config/database.sql` pour créer les tables.
-4.  *(Optionnel)* Exécutez le contenu de `server/public/config/debug.sql` pour ajouter des données de test.
+### 1. Prérequis & Base de données
+Ce projet nécessite un serveur local (type **XAMPP**, **WAMP** ou **MAMP**).
+
+1. **Lancer les services** : Ouvrez votre panneau de contrôle (ex: XAMPP Control Panel) et démarrez les modules Apache et MySQL.
+2. **Accéder à l'interface** : Allez sur `http://localhost/phpmyadmin`.
+3. **Importer les données** :
+   *  Cliquez sur l'onglet Importer.
+   *  Choisissez le fichier `server/public/config/database.sql`.
+   *  (Optionnel) Importez ensuite `server/public/config/debug.sql` pour avoir des quiz de test.
 
 ### 2. Configuration Backend
 Dans le dossier `server/public/config/` :
