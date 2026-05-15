@@ -59,12 +59,3 @@ VALUES
 (4, 'Oxygen', FALSE),
 (4, 'Hydrogen', FALSE),
 (4, 'Salt', FALSE);
-
-INSERT INTO game_sessions (quiz_id, host_id, room_code, mode, modifier, status, max_players)
-VALUES
-(1, 1, 'AB12CD', 'MULTIPLAYER', 'CLASSIC', 'LOBBY', 4);
-
-INSERT INTO game_players (session_id, user_id, score, is_ready, is_host)
-VALUES
-(1, 1, 0, TRUE, TRUE),
-(1, 2, 0, TRUE, FALSE);

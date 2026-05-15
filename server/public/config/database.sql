@@ -106,6 +106,36 @@ CREATE TABLE game_players (
     FOREIGN KEY (last_answer_id) REFERENCES answers(id) ON DELETE SET NULL
 );
 
+CREATE TABLE player_answers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    session_id INT NOT NULL,
+    player_id INT NOT NULL,
+    question_id INT NOT NULL,
+    answer_id INT,
+
+    is_correct BOOLEAN NOT NULL,
+    response_time_ms INT,
+
+    answered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (session_id)
+        REFERENCES game_sessions(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (player_id)
+        REFERENCES game_players(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (question_id)
+        REFERENCES questions(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (answer_id)
+        REFERENCES answers(id)
+        ON DELETE CASCADE
+);
+
 -- =====================
 -- ITEMS SYSTEM
 -- =====================

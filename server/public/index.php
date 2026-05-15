@@ -35,6 +35,10 @@ switch ($controller) {
         require "routes/categories.php";
         break;
 
+    case "rooms":
+        require "routes/rooms.php";
+        break;
+
     default:
         http_response_code(404);
         echo json_encode(["error" => "Route not found"]);

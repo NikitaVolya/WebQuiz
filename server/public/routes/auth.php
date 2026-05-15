@@ -6,9 +6,12 @@ $auth = new AuthController($conn);
 
 $data = json_decode(file_get_contents("php://input"), true);
 
+// POST auth/register
 if ($method === "POST" && $action === "register") {
     $auth->register($data);
 }
+
+// POST auth/login
 else if ($method === "POST" && $action === "login") {
     $auth->login($data);
 }

@@ -5,10 +5,14 @@ require_once __DIR__ . '/../config/jwt.php';
 require_once __DIR__ . '/../models/User.php';
 
 class AuthController {
+
     private User $userModel;
+
+    private PDO $conn;
 
     public function __construct($db) {
         $this->userModel = new User($db);
+        $this->conn = $db;
     }
 
     public function login($data) {
@@ -56,4 +60,5 @@ class AuthController {
             "exists" => $result
         ]);
     }
+
 }
