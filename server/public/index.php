@@ -38,6 +38,10 @@ switch ($controller) {
     case "rooms":
         require "routes/rooms.php";
         break;
+    
+    case "studio":
+        require "routes/studio.php";
+        break;
 
     default:
         http_response_code(404);

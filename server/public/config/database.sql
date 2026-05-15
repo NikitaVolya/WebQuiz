@@ -46,10 +46,11 @@ CREATE TABLE quizzes (
     category_id INT NULL,
     creator_id INT,
     title VARCHAR(100) NOT NULL,
-    questions_count INT DEFAULT 0,
     description TEXT,
     image_url VARCHAR(255),
+    questions_count INT DEFAULT 0,
     is_public BOOLEAN DEFAULT TRUE,
+    is_private BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
     FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
@@ -167,4 +168,26 @@ CREATE TABLE active_penalties (
     FOREIGN KEY (target_id) REFERENCES game_players(id) ON DELETE CASCADE,
     FOREIGN KEY (attacker_id) REFERENCES game_players(id) ON DELETE CASCADE,
     FOREIGN KEY (item_id) REFERENCES items(id)
+);
+
+-- =====================
+-- STUDIO / DRAFTS
+-- =====================
+CREATE TABLE quiz_drafts (
+    id VARCHAR(36) PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    category_id INT NULL,
+    image_url VARCHAR(255),
+    questions_count INT DEFAULT 0,
+    
+    content JSON NOT NULL, 
+    
+    is_published BOOLEAN DEFAULT FALSE,
+    is_private BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 );

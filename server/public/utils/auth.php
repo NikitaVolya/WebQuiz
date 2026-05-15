@@ -10,11 +10,11 @@ class Auth {
         $headers = getallheaders();
 
         // CHECK AUTH HEADER
-        if (!isset($headers['Authorization'])) {
+        if (!isset($headers['authorization'])) {
             return null;
         }
 
-        $authHeader = $headers['Authorization'];
+        $authHeader = $headers['authorization'];
 
         // EXTRACT TOKEN
         $token = trim(
