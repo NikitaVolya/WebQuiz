@@ -25,6 +25,12 @@ export default defineConfig({
         target: 'http://localhost:8000',
         changeOrigin: true,
         secure: false,
+      },
+      '/studio': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false,
+        xfwd: true
       }
     }
   }

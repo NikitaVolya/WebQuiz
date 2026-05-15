@@ -67,7 +67,7 @@ Le fichier `vite.config.ts` gère le proxy pour les routes suivantes afin d'évi
 
 Le système utilise un **JSON Web Token (JWT)** stocké dans le localStorage.
 
-* **Intercepteur de requête** : Ajoute automatiquement le header `Authorization: Bearer <token>` à chaque appel API.
+* **Intercepteur de requête** : Ajoute automatiquement le header `authorization: Bearer <token>` à chaque appel API.
 * **Intercepteur de réponse** : Déconnecte automatiquement l'utilisateur et nettoie la session si le serveur renvoie une erreur 401 (Token expiré).
 
 ## Structure des dossiers clés

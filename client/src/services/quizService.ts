@@ -2,9 +2,9 @@
  * @file services/quizService.ts
  */
 import type { Quiz, Category } from "../types/quiz";
-import { JsonQuizRepository as quizRepo } from '../repositories/json/JsonQuizRepository';
-// import { ApiQuizRepository } from '../repositories/api/ApiQuizRepository';
-// const quizRepo = new ApiQuizRepository();
+// import { JsonQuizRepository as quizRepo } from '../repositories/json/JsonQuizRepository';
+import { ApiQuizRepository } from '../repositories/api/ApiQuizRepository';
+const quizRepo = new ApiQuizRepository();
 
 let discoveryCache: Quiz[] | null = null;
 let categoriesCache: Category[] | null = null;

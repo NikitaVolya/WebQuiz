@@ -1,14 +1,7 @@
 /**
  * @file repositories/IStudioRepository.ts
  */
-import type { QuizDraft } from '../types/studio/QuizDraft';
-
-export interface DraftSummary {
-  id: string;
-  title: string;
-  updatedAt: Date;
-  questionsCount: number;
-}
+import type { QuizDraft, DraftSummary } from '../types/studio/QuizDraft';
 
 export interface IStudioRepository {
   /**

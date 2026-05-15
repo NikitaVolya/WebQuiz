@@ -2,6 +2,20 @@
  * @file types/studio/QuizDraft.ts
  */
 
+export interface DraftSummary {
+  id: string;
+  title: string;
+  description: string;
+  categoryId: number | null;
+  imageUrl: string;
+  isPublished: boolean;
+  isPrivate: boolean;
+  questionsCount: number;
+
+  updatedAt?: string;
+  createdAt?: string;
+}
+
 export interface AnswerDraft {
   tempId: string;
   answerText: string;

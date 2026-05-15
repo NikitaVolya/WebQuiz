@@ -1,9 +1,10 @@
 /**
  * @file services/studioService.ts
  */
-import type { QuizDraft } from '../types/studio/QuizDraft';
-import type { DraftSummary } from '../repositories/IStudioRepository';
-import { JsonStudioRepository as studioRepo } from '../repositories/json/JsonStudioRepository';
+import type { QuizDraft, DraftSummary } from '../types/studio/QuizDraft';
+// import { JsonStudioRepository as studioRepo } from '../repositories/json/JsonStudioRepository';
+import { ApiStudioRepository } from '../repositories/api/ApiStudioRepository';
+const studioRepo = new ApiStudioRepository();
 
 // --- CACHE PRIVÉ ---
 let draftsCache: DraftSummary[] | null = null;

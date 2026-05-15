@@ -3,9 +3,9 @@
  * Logique métier de l'authentification.
  */
 import type { User, UserCredentials, SignUpData } from '../types/auth';
-import { JsonAuthRepository as authRepo } from '../repositories/json/JsonAuthRepository';
-// import { ApiAuthRepository } from '../repositories/api/ApiAuthRepository';
-// const authRepo = new ApiAuthRepository();
+// import { JsonAuthRepository as authRepo } from '../repositories/json/JsonAuthRepository';
+import { ApiAuthRepository } from '../repositories/api/ApiAuthRepository';
+const authRepo = new ApiAuthRepository();
 
 export const authService = {
   /**
