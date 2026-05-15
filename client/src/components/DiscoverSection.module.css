@@ -1,0 +1,70 @@
+.discoverWrapper {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.sectionTitle {
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+/* SEARCH BAR */
+.searchBar {
+  flex: 1;
+  max-width: 400px;
+  min-width: 250px;
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  height: 48px;
+  transition: border-color 0.2s;
+}
+
+.searchBar:focus-within {
+  border-color: var(--accent);
+}
+
+.searchIcon {
+  color: var(--text-secondary);
+  margin-right: 10px;
+}
+
+.searchBar input {
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  width: 100%;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+/* GRID SYSTEM */
+.quizGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .searchBar {
+    max-width: 100%;
+  }
+}

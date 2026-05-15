@@ -1,0 +1,1 @@
+export type GameMode = 'SOLO' | 'MULTIPLAYER' | 'PARTY';

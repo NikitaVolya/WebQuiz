@@ -17,9 +17,12 @@ class RoomController {
 
         $user = Auth::getAuthenticatedUser($this->conn);
         if (!$user) {
-            Response::json([
-                "error" => "Unauthorized"
-            ], 401);
+            $headers = getallheaders();
+            error_log("Auth failed. Headers reçus : " . json_encode($headers));
+            
+            http_response_code(401);
+            echo json_encode(["error" => "Unauthorized", "debug_headers" => $headers]);
+            exit;
         }
 
         // =====================
@@ -214,116 +217,108 @@ class RoomController {
     }
 
     public function joinRoom() {
-
         $user = Auth::getAuthenticatedUser($this->conn);
-
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (!isset($data['room_code'])) {
-            Response::json([
-                "error" => "Missing room_code"
-            ], 400);
+            Response::json(["error" => "Missing room_code"], 400);
         }
 
-        // find session
-        $stmt = $this->conn->prepare("
-            SELECT *
-            FROM game_sessions
-            WHERE room_code = ?
-        ");
-
+        $stmt = $this->conn->prepare("SELECT * FROM game_sessions WHERE room_code = ?");
         $stmt->execute([$data['room_code']]);
-
         $session = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$session) {
-            Response::json([
-                "error" => "Room not found"
-            ], 404);
+            Response::json(["error" => "Room not found"], 404);
         }
 
-        // CHECK GAME STATE
         if ($session['status'] !== 'LOBBY') {
-            Response::json([
-                "error" => "Game already started"
-            ], 403);
+            Response::json(["error" => "Game already started"], 403);
         }
 
-        // already joined
         if ($this->checkPlayerInGameSession($user['id'], $session['id'])) {
-            Response::json([
-                "message" => "Already joined"
-            ]);
+            Response::json(["message" => "Already joined"], 200);
+            return;
         }
 
-        // player count
-        $stmt = $this->conn->prepare("
-            SELECT COUNT(*) as total
-            FROM game_players
-            WHERE session_id = ?
-        ");
-
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM game_players WHERE session_id = ?");
         $stmt->execute([$session['id']]);
-
-        $playersCount = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($playersCount['total'] >= $session['max_players']) {
-            Response::json([
-                "error" => "Room is full"
-            ], 400);
+        if ($stmt->fetchColumn() >= $session['max_players']) {
+            Response::json(["error" => "Room is full"], 400);
         }
 
-        // insert player
+        $isHost = ($session['host_id'] == $user['id']) ? 1 : 0;
+
         $stmt = $this->conn->prepare("
-            INSERT INTO game_players (
-                session_id,
-                user_id
-            )
-            VALUES (?, ?)
+            INSERT INTO game_players (session_id, user_id, is_host, is_ready)
+            VALUES (?, ?, ?, ?)
         ");
 
         $stmt->execute([
             $session['id'],
-            $user['id']
+            $user['id'],
+            $isHost,
+            $isHost
         ]);
 
-        Response::json([
-            "message" => "Joined room successfully"
-        ], 201);
+        Response::json(["message" => "Joined room successfully"], 201);
     }
 
     public function getStatus($room_code) {
-
         $stmt = $this->conn->prepare("
-            SELECT
-                gs.id,
-                gs.status,
-                gs.mode,
-                gs.modifier,
-                gs.current_question_index,
+            SELECT 
+                gs.id, 
+                gs.status, 
+                gs.mode, 
+                gs.modifier, 
+                gs.current_question_index, 
                 gs.max_players,
-
-                (
-                    SELECT COUNT(*)
-                    FROM game_players gp
-                    WHERE gp.session_id = gs.id
-                ) as players_count
-
+                gs.host_id,
+                gs.room_code,
+                gs.quiz_id
             FROM game_sessions gs
             WHERE gs.room_code = ?
         ");
 
         $stmt->execute([$room_code]);
-
         $session = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$session) {
-            Response::json([
-                "error" => "Room not found"
-            ], 404);
+            Response::json(["error" => "Room not found"], 404);
         }
 
-        Response::json($session);
+        $stmt = $this->conn->prepare("
+            SELECT 
+                u.id, 
+                u.username, 
+                u.avatar_url,
+                gp.is_host,
+                gp.is_ready,
+                gp.score,
+                gp.session_id,
+                gp.user_id
+            FROM game_players gp
+            JOIN users u ON u.id = gp.user_id
+            WHERE gp.session_id = ?
+            ORDER BY gp.id ASC
+        ");
+        $stmt->execute([$session['id']]);
+        $players = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $response = [
+            "id" => $session['id'],
+            "room_code" => $session['room_code'],
+            "quiz_id" => $session['quiz_id'],
+            "host_id" => $session['host_id'],
+            "status" => $session['status'],
+            "mode" => $session['mode'],
+            "modifier" => $session['modifier'],
+            "current_question_index" => $session['current_question_index'],
+            "max_players" => $session['max_players'],
+            "players" => $players
+        ];
+
+        Response::json($response);
     }
 
     public function getCurrentQuestion($room_code) {

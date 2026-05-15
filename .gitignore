@@ -2,7 +2,6 @@
 client/node_modules/
 client/dist/
 client/.env.local
-client/*
 
 # Back-end
 server/vendor/

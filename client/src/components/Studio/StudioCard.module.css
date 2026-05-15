@@ -1,0 +1,140 @@
+.card {
+  position: relative;
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-height: 140px; 
+  height: 140px;
+}
+
+.card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* BOX IMAGE / ICON */
+.imageBox {
+  width: 70px;
+  height: 70px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-soft);
+}
+
+.previewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.iconPlaceholder {
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.info h3 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.info p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0.2rem 0 0;
+}
+
+.statusDraft {
+    color: #ffa502;
+    font-weight: 600;
+}
+
+.statusPub {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.lockIcon {
+    color: var(--danger);
+    display: flex;
+}
+
+.globeIcon {
+    color: var(--success);
+    display: flex;
+}
+
+.actionsOverlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  z-index: 5;
+}
+
+.deleteBtn, .publishBtn {
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover .deleteBtn, .card:hover .publishBtn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.deleteBtn { 
+    background: rgba(255, 71, 87, 0.1);
+    color: var(--danger);
+}
+
+.deleteBtn:hover {
+    background: var(--danger);
+    color: white;
+}
+
+.publishBtn {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.publishBtn:hover {
+    background: var(--accent);
+    color: white;
+}

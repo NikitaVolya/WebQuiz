@@ -1,0 +1,1 @@
+export type GameModifier = 'CLASSIC' | 'CHAOS' | 'BATTLE_ROYALE';

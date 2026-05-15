@@ -16,7 +16,14 @@ class StudioController {
      */
     public function getDrafts() {
         $stmt = $this->conn->prepare("
-            SELECT id, title, image_url, category_id, is_published 
+            SELECT 
+                id, 
+                title, 
+                image_url, 
+                category_id, 
+                questions_count, 
+                is_published, 
+                is_private 
             FROM quiz_drafts 
             WHERE user_id = ? AND is_published = 0
             ORDER BY updated_at DESC
@@ -28,45 +35,72 @@ class StudioController {
     /**
      * POST /studio/drafts/{id}
      */
-    public function save($id = null) {
-        $data = json_decode(file_get_contents("php://input"), true);
+    public function save($idFromUrl = null) {
+        $json = file_get_contents("php://input");
+        $data = json_decode($json, true);
         
-        if (!$data) {
-            Response::json(["error" => "Données invalides"], 400);
+        if (!$data || !isset($data['id'])) {
+            Response::json(["error" => "Données ou ID manquants"], 400);
             return;
         }
 
         $draftId = $data['id'];
+        $questionsCount = isset($data['questions']) ? count($data['questions']) : 0;
+        
+        $isPublished = ($data['is_published'] ?? false) ? 1 : 0;
+        $isPrivate = ($data['is_private'] ?? false) ? 1 : 0;
 
-        if ($id === 'new' || $id === null) {
-            $stmt = $this->conn->prepare("
-                INSERT INTO quiz_drafts (id, user_id, title, category_id, image_url, content) 
-                VALUES (?, ?, ?, ?, ?, ?)
-            ");
-            $stmt->execute([
-                $draftId,
-                $this->userId,
-                $data['title'],
-                $data['category_id'],
-                $data['image_url'],
-                json_encode($data)
-            ]);
-        } else {
-            $stmt = $this->conn->prepare("
-                UPDATE quiz_drafts 
-                SET title = ?, category_id = ?, image_url = ?, content = ? 
-                WHERE id = ? AND user_id = ?
-            ");
-            $stmt->execute([
-                $data['title'],
-                $data['category_id'],
-                $data['image_url'],
-                json_encode($data),
-                $id,
-                $this->userId
-            ]);
+        $check = $this->conn->prepare("SELECT 1 FROM quiz_drafts WHERE id = ? AND user_id = ?");
+        $check->execute([$draftId, $this->userId]);
+        $exists = $check->fetch();
+
+        try {
+            if (!$exists) {
+                $stmt = $this->conn->prepare("
+                    INSERT INTO quiz_drafts (id, user_id, title, category_id, image_url, questions_count, is_published, is_private, content) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([
+                    $draftId,
+                    $this->userId,
+                    $data['title'] ?? '',
+                    $data['category_id'] ?? null,
+                    $data['image_url'] ?? '',
+                    $questionsCount,
+                    $isPublished,
+                    $isPrivate,
+                    $json
+                ]);
+            } else {
+                $stmt = $this->conn->prepare("
+                    UPDATE quiz_drafts 
+                    SET title = ?, 
+                        category_id = ?, 
+                        image_url = ?, 
+                        questions_count = ?, 
+                        is_published = ?, 
+                        is_private = ?, 
+                        content = ? 
+                    WHERE id = ? AND user_id = ?
+                ");
+                $stmt->execute([
+                    $data['title'] ?? '',
+                    $data['category_id'] ?? null,
+                    $data['image_url'] ?? '',
+                    $questionsCount,
+                    $isPublished,
+                    $isPrivate,
+                    $json,
+                    $draftId,
+                    $this->userId
+                ]);
+            }
+
+            Response::json(["success" => true, "id" => $draftId]);
+
+        } catch (PDOException $e) {
+            Response::json(["success" => false, "error" => $e->getMessage()], 500);
         }
-        Response::json(["success" => true, "id" => $draftId]);
     }
 
     /**

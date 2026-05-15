@@ -1,0 +1,144 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.wideCard {
+  position: relative;
+  width: 100%;
+  max-width: 850px;
+  background: var(--bg-card);
+  border-radius: 32px;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+}
+
+/* COLONNE GAUCHE */
+.sideInfo {
+  width: 35%;
+  background: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+}
+
+.imageWrapper {
+  position: relative;
+  height: 180px;
+}
+
+.imageWrapper img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(transparent, var(--bg-main));
+  padding: 15px; display: flex; align-items: flex-end;
+}
+
+.infoContent { padding: 0 20px 20px 20px; }
+.infoContent h2 { margin: 0 0 10px 0; font-size: 1.4rem; }
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.miniStats span { display: flex; align-items: center; gap: 4px; }
+
+.descText {
+  font-size: 0.85rem; color: var(--text-muted);
+  line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* COLONNE DROITE */
+.configArea {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 25px;
+}
+
+.label {
+  font-size: 0.75rem; text-transform: uppercase;
+  color: var(--text-muted); letter-spacing: 1px; margin-bottom: 12px;
+}
+
+.choiceGrid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+}
+
+.choiceBtn {
+  background: var(--bg-main); border: 1px solid var(--border);
+  border-radius: 16px; padding: 15px 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--text-secondary); cursor: pointer; transition: all 0.2s;
+}
+
+.choiceBtn.active {
+  border-color: var(--accent); background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent); transform: translateY(-2px);
+}
+
+.finalStartBtn {
+  width: 100%; padding: 18px; border: none; border-radius: 16px;
+  background: var(--accent); color: white; font-weight: 800;
+  font-size: 1.1rem; cursor: pointer; margin-top: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: var(--text-on-accent);
+
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+.closeBtn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
+}
+
+.closeBtn:active {
+  transform: scale(0.9);
+}
+
+@media (max-width: 768px) {
+  .wideCard { flex-direction: column; max-height: 95vh; overflow-y: auto; }
+  .sideInfo { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+  .configArea { padding: 20px; }
+}
