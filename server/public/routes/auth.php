@@ -18,6 +18,26 @@ else if ($method === "POST" && $action === "login") {
 else if ($method === "GET" && $action === "exists") {
     $auth->exists($_GET['field'], $_GET['value']);
 }
+    
+else if (
+
+    $method === "POST"
+    && $action === "forgot-password"
+
+) {
+    $auth->forgotPassword($data);
+}
+
+else if (
+
+    $method === "POST"
+    && $action === "reset-password"
+
+) {
+
+    $auth->resetPassword($data);
+}
+
 else {
 
     http_response_code(404);
