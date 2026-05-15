@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-# 🏆 Quiz Battle - Fullstack Application
-
-Quiz Battle est une plateforme de quiz interactive et compétitive. Ce projet intègre un système de jeu en temps réel (Solo & Multijoueur), un Studio de création de quiz complet, et une architecture robuste séparant le **Frontend (React/TS)** du **Backend (PHP/MySQL)**.
-
-## 📁 Structure du Projet
-=======
 # Quiz Battle - Fullstack Application
 
 Quiz Battle est une plateforme de quiz interactive et compétitive. Ce projet intègre un système de jeu en temps réel (Solo & Multijoueur), un Studio de création de quiz complet, et une architecture robuste séparant le **Frontend (React/TS)** du **Backend (PHP/MySQL)**.
 
 ## Structure du Projet
->>>>>>> b15df854a07d22763c416eb05e0909f0098fae85
 
 * **/client** : Interface utilisateur moderne développée avec React 18, TypeScript, Vite et Framer Motion.
 * **/server** : API RESTful en PHP natif avec gestion JWT, architecture par contrôleurs et système de base de données MySQL.
@@ -18,11 +10,7 @@ Quiz Battle est une plateforme de quiz interactive et compétitive. Ce projet in
 
 ---
 
-<<<<<<< HEAD
-## 🚀 Installation Rapide
-=======
 ## Installation Rapide
->>>>>>> b15df854a07d22763c416eb05e0909f0098fae85
 
 ### 1. Base de données
 1.  Ouvrez votre gestionnaire MySQL (phpMyAdmin, MySQL Workbench, etc.).
@@ -41,11 +29,7 @@ Le client est configuré pour communiquer avec le serveur local.
 
 ---
 
-<<<<<<< HEAD
 ## 🛠️ Lancement du projet
-=======
-## Lancement du projet
->>>>>>> b15df854a07d22763c416eb05e0909f0098fae85
 
 Le projet nécessite que le serveur et le client tournent simultanément.
 
@@ -103,8 +87,4 @@ Le projet suit des principes de design rigoureux :
 
 ---
 
-<<<<<<< HEAD
 © 2026 Quiz Battle Project
-=======
-© 2026 Quiz Battle Project
->>>>>>> b15df854a07d22763c416eb05e0909f0098fae85
