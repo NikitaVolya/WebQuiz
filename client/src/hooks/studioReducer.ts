@@ -1,7 +1,7 @@
 /**
  * @file views/Studio/studioReducer.ts
  */
-import type { QuizDraft, QuestionDraft, AnswerDraft } from '../../types/studio/QuizDraft';
+import type { QuizDraft, QuestionDraft, AnswerDraft } from '../types/studio/QuizDraft';
 
 export type StudioAction =
   | { type: 'LOAD_QUIZ'; payload: QuizDraft }

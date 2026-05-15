@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { type StudioAction } from '../../views/Studio/studioReducer';
+import { type StudioAction } from '../../hooks/studioReducer';
 import type { QuizDraft } from '../../types/studio/QuizDraft';
 import styles from './StudioEngine.module.css';
 import { useQuiz } from '../../hooks/useQuiz';

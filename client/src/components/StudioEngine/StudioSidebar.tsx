@@ -6,7 +6,7 @@ import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { arrayMove } from '@dnd-kit/sortable';
 
 import { SortableQuestionItem } from './SortableQuestionItem';
-import { type StudioAction } from '../../views/Studio/studioReducer';
+import { type StudioAction } from '../../hooks/studioReducer';
 import type { QuizDraft } from '../../types/studio/QuizDraft';
 import styles from './StudioSidebar.module.css';
 

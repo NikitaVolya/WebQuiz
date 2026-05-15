@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trash2, ImageIcon, Check, Plus } from 'lucide-react';
 import styles from './QuestionCard.module.css';
-import { type StudioAction } from '../../views/Studio/studioReducer';
+import { type StudioAction } from '../../hooks/studioReducer';
 
 interface Props {
   q: any;

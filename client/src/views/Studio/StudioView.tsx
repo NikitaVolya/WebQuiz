@@ -1,5 +1,5 @@
 import React, { useReducer, useState, useEffect } from 'react';
-import { studioReducer, createDefaultQuestion } from './studioReducer';
+import { studioReducer, createDefaultQuestion } from '../../hooks/studioReducer';
 import StudioEngine from '../../components/StudioEngine/StudioEngine';
 import { useStudio } from '../../hooks/useStudio';
 import ConfirmDialog from '../../components/ConfirmDialog'
