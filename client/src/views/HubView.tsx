@@ -13,6 +13,7 @@ import { Header } from "../components/Header";
 import { DiscoverSection } from "../components/DiscoverSection";
 import { QuizPreviewModal } from "../components/QuizPreviewModal";
 import { CategoryCarousel } from "../components/CategoryCarousel";
+import { HubFooter } from "../components/HubFooter";
 
 interface HubViewProps {
   onStartGame: (config: { quizId: number; mode: GameMode; modifier: GameModifier }) => void;
@@ -196,6 +197,8 @@ export const HubView = ({
         }}
         onConfirm={onStartGame}
       />
+
+      <HubFooter />
     </motion.div>
   );
 };
